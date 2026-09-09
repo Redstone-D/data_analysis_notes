@@ -28,3 +28,17 @@ Use two-digit, zero-padded filenames:
 The shared formatting and reference macros live in `notes-common.sty`.
 Course-specific server information lives in `notes-project.sty`. See
 `LATEX_AUTHORING_GUIDE.md` for the complete authoring and reference guide.
+
+## Deployment
+
+Pushing a change beneath `latex_target/` to `master` runs the
+GitHub Actions workflow in `.github/workflows/deploy.yml`. It sends the
+`NOTES_DEPLOY_KEY` secret to
+`https://notes.rua.rs/deploy/data-analysis` in the `x-api-key`
+header, then verifies that `lec01.pdf` appears on the course page and
+can be downloaded.
+
+Before the first push, configure the repository Actions secret
+`NOTES_DEPLOY_KEY`. Its value must match the notes server's
+`NOTES_DEPLOY_KEY` environment variable. The notes server must also
+have the `data-analysis` project registered.

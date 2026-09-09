@@ -1,0 +1,68 @@
+name: Push Notes
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "latex_target/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-data-analysis
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy data-analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger notes server deployment
+        env:
+          NOTES_DEPLOY_KEY: ${{ secrets.NOTES_DEPLOY_KEY }}
+        run: |
+          if [ -z "$NOTES_DEPLOY_KEY" ]; then
+            echo "The NOTES_DEPLOY_KEY repository secret is not configured."
+            exit 1
+          fi
+
+          curl \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --connect-timeout 15 \
+            --max-time 180 \
+            --request POST \
+            --header "x-api-key: $NOTES_DEPLOY_KEY" \
+            https://notes.rua.rs/deploy/data-analysis
+
+      - name: Verify deployed course
+        run: |
+          course_page="$(mktemp)"
+          curl \
+            --fail \
+            --silent \
+            --show-error \
+            --connect-timeout 15 \
+            --max-time 30 \
+            --output "$course_page" \
+            https://notes.rua.rs/data-analysis
+
+          if ! grep --quiet "lec01.pdf" "$course_page"; then
+            echo "lec01.pdf is missing from the course page."
+            exit 1
+          fi
+
+          curl \
+            --fail \
+            --silent \
+            --show-error \
+            --connect-timeout 15 \
+            --max-time 30 \
+            --output /dev/null \
+            https://notes.rua.rs/data-analysis/lec01.pdf
