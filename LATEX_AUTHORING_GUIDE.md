@@ -39,12 +39,13 @@ Proposition 2.1.
 |---|---|---|
 | `dfn` | `definition` | `def` |
 | `thm` | `theorem` | `thm` |
+| `axm` | `axiom` | `axm` |
 | `prop` | `proposition` | `prop` |
 | `lem` | `lemma` | `lem` |
 | `cor` | `corollary` | `cor` |
 | `rem` | `remark` | `rem` |
-| `ex` | `example` | `ex` |
-| `exc` | `exercise` | `exc` |
+| `eg` | `example` | `eg` |
+| `ex` | `exercise` | `ex` |
 | `conv` | `convention` | `conv` |
 
 Use an optional printed title followed by a stable semantic ID:
@@ -121,9 +122,9 @@ For a published tutorial, cite the source exercise and write your own answer
 without reproducing the full question:
 
 ```tex
-\begin{exc}{author-book-exercise-id}
+\begin{ex}{author-book-exercise-id}
   \emph{Source:} Author, \emph{Book Title}, edition, Exercise 1.2.3.
-\end{exc}
+\end{ex}
 
 % Write your own answer below.
 ```

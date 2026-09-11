@@ -4,10 +4,95 @@
 \begin{document}
 
 \begin{center}
-  {\LARGE\bfseries Lecture 1}\\[0.25em]
-  {\large AP30019 Data Analysis Techniques for Scientists}\\[0.15em]
+  {\LARGE\bfseries Lecture 1: Finding Solutions}\\[0.25em]
+  {\large Introduction to Data Analysis Techniques}\\[0.15em]
 \end{center}
 
-% Add lecture notes here.
+\section{Data Analysis in Science} 
+
+\begin{dfn}[Analytical Method and Analytical Solution]{analytical-method}
+  When we use \emph{analytical methods} to solve a problem, we are manipulating the mathematical expressions until unknowns are being isolated into a standard mathematical form. 
+
+  An \emph{analytical solution} is a solution for a problem such that the unknowns are expressed in a closed form. 
+\end{dfn}
+
+\begin{eg}[Analytical Solution of a Quadratic Equation]{quadratic-equation}
+  Consider the quadratic equation
+  \begin{equation}
+    ax^2 + bx + c = 0,
+  \end{equation}
+  where $a$, $b$, and $c$ are constants. The analytic solution for $x$ can be found using the quadratic formula:
+  \begin{equation}
+    x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.
+  \end{equation} 
+\end{eg}
+
+\begin{dfn}[Numerical Method and Numerical Solution]{numerical-method}
+  \emph{Numerical methods} are methods to obtain numerical solutions. 
+
+  A \emph{numerical solution} is a solution for a problem such that the unknowns are expressed in an numerical form.
+\end{dfn} 
+
+\begin{eg}[Numerical Solution of a Trigonometric Equation]{trig-equation}
+  Consider the trigonometric equation
+  \begin{equation}
+    x = \beta \cos x
+  \end{equation} 
+  where $\beta$ is a constant. 
+
+  It is very difficult to find an analytical solution for this equation using algebraic manipulations. However, we can use numerical methods to find an approximate solution for specific $\beta$ values. 
+
+  The numerical solutions can be 
+  \[
+  \beta = 1, \quad x \approx 0.73909, \quad \beta = 0.5, \quad x \approx 0.4508 
+  \]
+\end{eg} 
+
+\begin{rem}[Advantages and Disadvantages of Numerical Methods]{numerical-methods}
+  \begin{enumerate}[nosep] 
+    \item For numerical methods, we must have all parameters of the problem known. 
+    \item If parameters change, solution must be re-done.
+    \item Solutions may be not exact. 
+    \item Numerical solutions often considered inferior to analytic solutions, if exist. \textit{ie, we should use analytical methods whenever possible or too difficult.}
+  \end{enumerate}
+
+\end{rem} 
+
+\section{Using Taylor Series to Approximate Functions} 
+\begin{dfn}[Taylor Series]{taylor-series}
+  For a function $f(x)$ that is infinitely differentiable at a point $a$, then: 
+  \[f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n\]
+\end{dfn}
+
+\begin{rem}[Taylor Series Approximation]{taylor-series-approx}
+  It is impossible to compute the infinite sum in practice. When we find the analytical solution of a problem, we can use the first few terms of the \xref[Taylor Series]{def:taylor-series} to approximate the function.
+
+  The more terms we use, the better the approximation.
+\end{rem}
+
+\begin{eg}[Electric Field of a Dipole for $x \gg a$]{dipole-field}
+  Consider the electric field on the axis of a dipole with charges $+q$ at $x = a$ and $-q$ at $x = -a$:
+  \[E = \frac{q}{4\pi\varepsilon_0} \left[
+    \frac{1}{(x-a)^2} - \frac{1}{(x+a)^2}
+  \right]\]
+
+  Take the Taylor series expansion of $E$ for $x \gg a$:
+  \[E = \frac{q}{4\pi\varepsilon_0 \, x^2} \left[
+    4\frac{a}{x} + 8\left(\frac{a}{x}\right)^3 + 12\left(\frac{a}{x}\right)^5 + \cdots
+  \right]\]
+
+  Keeping the first two terms gives an approximation for $x \gg a$:
+  \[E \approx \frac{q}{4\pi\varepsilon_0 \, x^2} \left[
+    4\frac{a}{x} + 8\left(\frac{a}{x}\right)^3
+  \right]\]
+
+  Which means, for $x \gg a$, $E \propto x^{-3}$.
+\end{eg}
+
+\section{Fixed Point Iteration Method} 
+
+\begin{dfn}[Fixed Point Iteration Method]
+  The idea for \emph{fixed point iteration method} is to first find a function $g(x)$ such that root $r$ is a \xref[fixed point]{fundamental-computing::lec07::def:fixed-point} of $g(x)$, i.e., $g(r) = r$ 
+\end{dfn}
 
 \end{document}
