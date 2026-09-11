@@ -1,5 +1,8 @@
 \documentclass[12pt]{article}
 \usepackage{notes-project}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{lec01/}}
 
 \begin{document}
 
@@ -92,7 +95,66 @@
 \section{Fixed Point Iteration Method} 
 
 \begin{dfn}[Fixed Point Iteration Method]
-  The idea for \emph{fixed point iteration method} is to first find a function $g(x)$ such that root $r$ is a \xref[fixed point]{fundamental-computing::lec07::def:fixed-point} of $g(x)$, i.e., $g(r) = r$ 
+  The idea for \emph{fixed point iteration method} is to first find a function $g(x)$ such that root $r$ is a \xref[fixed point]{fundamental-computing::lec07::def:fixed-point} of $g(x)$, i.e., $g(r) = r$
 \end{dfn}
+
+\begin{conv}[Procedure of Fixed Point Iteration Method]{fixed-point-iteration}
+  The classical procedure of fixed point iteration method is as follows: 
+  \begin{enumerate}[nosep]
+    \item Find a function $g(x)$ such that root $r$ is a fixed point of $g(x)$, i.e., $g(r) = r$.
+    \item Choose an initial guess $x_0$.
+    \item Choose a maximum number of iterations $N$ 
+    \item Iterate $x_{n+1} = g(x_n)$ for $N$ times 
+  \end{enumerate} 
+\end{conv}
+
+\begin{rem}[Error Analysis of Fixed Point Iteration Method]{fixed-point-iteration-error}
+  By using this method, we usually believe that the root, $r$, is close to the initial guess, $x_0$. Also, it should be within $x_n$ and $x_{n+1}$ forall $n$. 
+
+  Which means, the error of the $n$-th iteration is $|x_n - r| \leq |x_{n+1} - x_n|$. 
+\end{rem}
+
+\begin{conv}[Optimized Fixed Point Iteration]{optimized-fpi}
+  We may want to set an error tolerance, $\mathrm{tol}$, and stop the iteration when $|x_{n+1} - x_n| < \mathrm{tol}$. 
+    \begin{enumerate}[nosep]
+    \item Find a function $g(x)$ such that root $r$ is a fixed point of $g(x)$, i.e., $g(r) = r$.
+    \item Choose an initial guess $x_0$.
+    \item Choose a maximum number of iterations $N$ 
+    \item Set an error tolerance, $\mathrm{tol}$ 
+    \item Iterate $x_{n+1} = g(x_n)$ 
+    \item Check if $|x_{n+1} - x_n| < \mathrm{tol}$, if yes, stop the iteration and return the value. 
+    \item If the maximum number of iterations is reached, stop the iteration and return the value. (For some algorithms, we may want to return an error message instead.)
+  \end{enumerate} 
+\end{conv}
+
+\begin{eg}[Solving $x - \cos x = 0$ by Fixed Point Iteration]{cos-fixed-point}
+  Apply \xref[Optimized Fixed Point Iteration]{conv:optimized-fpi} to $f(x) = x - \cos x = 0$.
+  \begin{enumerate}[nosep]
+    \item Rewrite $f(x) = 0$ as $x = \cos x$, so $g(x) = \cos x$ and $g(r) = r$.
+    \item Initial guess: $x_0 = 1$.
+    \item Maximum iterations: $N = 100$.
+    \item Error tolerance: $\mathrm{tol} \in \{5 \times 10^{-2},\ 1 \times 10^{-3}\}$ (two runs for comparison).
+    \item Iterate $x_{n+1} = \cos x_n$.
+    \item Stop when $|x_{n+1} - x_n| < \mathrm{tol}$ and return $x_{n+1}$.
+    \item If $n$ reaches $N$, stop and return the last $x_{n+1}$.
+  \end{enumerate}
+
+  Both runs spiral into the fixed point $r \approx 0.739$; a tighter tolerance just adds more steps near $r$.
+
+  \begin{figure}[h]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_low_accuracy.png}
+      \caption{$\mathrm{tol} = 5 \times 10^{-2}$ (loose).}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_high_accuracy.png}
+      \caption{$\mathrm{tol} = 1 \times 10^{-3}$ (tight).}
+    \end{subfigure}
+  \end{figure}
+\end{eg}
 
 \end{document}
