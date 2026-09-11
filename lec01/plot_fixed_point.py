@@ -15,12 +15,15 @@ def plot_fixed_point_iteration(
     title: str | None = None,
 ) -> list[float]:
     """
-    Draw a cobweb diagram for the fixed-point iteration x_{n+1} = g(x_n).
+    Visualize the fixed-point iteration x_{n+1} = g(x_n) with two figures.
 
-    Plots y = g(x) together with the diagonal y = x, then traces the
-    staircase of iterates so the reader can see how each step moves and
-    whether the sequence converges toward a fixed point (where the two
-    curves intersect).
+    Figure 1 is a cobweb diagram: y = g(x), the diagonal y = x, and the
+    staircase of iterates. Fixed points sit at intersections of the curve
+    and the diagonal.
+
+    Figure 2 plots the iterate sequence x_n against the index n.
+    Converging runs level out toward a horizontal asymptote (the fixed
+    point); diverging or oscillating runs stay wobbly.
 
     Returns the sequence of iterates [x_0, x_1, ..., x_k].
     """
@@ -33,6 +36,7 @@ def plot_fixed_point_iteration(
             break
         x = x_new
 
+    # Figure 1: cobweb diagram.
     if xlim is None:
         lo, hi = min(xs), max(xs)
         pad = max(0.5, 0.2 * (hi - lo))
@@ -67,6 +71,20 @@ def plot_fixed_point_iteration(
     ax.legend(loc="best")
     ax.grid(True, alpha=0.3)
     ax.set_aspect("equal", adjustable="box")
+    plt.tight_layout()
+    plt.show()
+
+    # Figure 2: iterate sequence x_n vs. n.
+    ns = list(range(len(xs)))
+    _, ax = plt.subplots(figsize=(6, 4))
+    ax.plot(ns, xs, "-o", color="tab:blue", markersize=4, label="$x_n$")
+    ax.axhline(xs[-1], color="tab:red", linestyle="--", linewidth=0.8,
+               label=f"final $x_n \\approx {xs[-1]:.4f}$")
+    ax.set_xlabel("$n$")
+    ax.set_ylabel("$x_n$")
+    ax.set_title(title or f"Iterates from $x_0 = {x0}$")
+    ax.legend(loc="best")
+    ax.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.show()
 
