@@ -127,7 +127,7 @@
   \end{enumerate} 
 \end{conv}
 
-\begin{eg}[Solving $x - \cos x = 0$ by Fixed Point Iteration]{cos-fixed-point}
+\begin{eg}[Convergent Case: Fixed Point Iteration on $x - \cos x = 0$]{cos-fixed-point}
   Apply \xref[Optimized Fixed Point Iteration]{conv:optimized-fpi} to $f(x) = x - \cos x = 0$.
   \begin{enumerate}[nosep]
     \item Rewrite $f(x) = 0$ as $x = \cos x$, so $g(x) = \cos x$ and $g(r) = r$.
@@ -139,26 +139,73 @@
     \item If $n$ reaches $N$, stop and return the last $x_{n+1}$.
   \end{enumerate}
 
-  Both runs spiral into the fixed point $r \approx 0.739$; a tighter tolerance just adds more steps near $r$.
+  Both runs spiral into the fixed point $r \approx 0.739$; a tighter tolerance just adds more steps near $r$. The cobwebs (top row) show the geometric approach; the iterate-vs-index plots (bottom row) show the same convergence as damped oscillation.
 
   \begin{figure}[h]
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
-      \includegraphics[width=\linewidth]{fixed_point_demo_low_accuracy.png}
-      \caption{$\mathrm{tol} = 5 \times 10^{-2}$ (loose).}
+      \includegraphics[width=\linewidth]{fixed_point_demo_1_low_accuracy_cobweb.png}
+      \caption{Cobweb, $\mathrm{tol} = 5 \times 10^{-2}$.}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
-      \includegraphics[width=\linewidth]{fixed_point_demo_high_accuracy.png}
-      \caption{$\mathrm{tol} = 1 \times 10^{-3}$ (tight).}
+      \includegraphics[width=\linewidth]{fixed_point_demo_1_high_accuracy_cobweb.png}
+      \caption{Cobweb, $\mathrm{tol} = 1 \times 10^{-3}$.}
+    \end{subfigure}
+
+    \vspace{0.5em}
+
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_1_low_accuracy_sequence.png}
+      \caption{$x_n$ vs. $n$, $\mathrm{tol} = 5 \times 10^{-2}$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_1_high_accuracy_sequence.png}
+      \caption{$x_n$ vs. $n$, $\mathrm{tol} = 1 \times 10^{-3}$.}
     \end{subfigure}
   \end{figure}
 \end{eg}
 
 \begin{rem}[Convergence not Guaranteed]{fixed-point-iteration-convergence}
-  The convergence of fixed point iteration is not guaranteed. 
-\end{rem} 
+  The convergence of fixed point iteration is not guaranteed.
+\end{rem}
+
+\begin{eg}[Divergent Case: $x - 1.5 \cos x = 0$]{divergent-fpi}
+  Same procedure as \xref{eg:cos-fixed-point}, but with $g(x) = 1.5 \cos x$ and $x_0 = 1$. It diverges and oscillates between $\approx 0.123$ and $\approx 1.489$; both runs hit $N = 100$ without ever satisfying the stop condition.
+
+  \begin{figure}[h]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_2_low_accuracy_cobweb.png}
+      \caption{Cobweb, $\mathrm{tol} = 5 \times 10^{-2}$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_2_high_accuracy_cobweb.png}
+      \caption{Cobweb, $\mathrm{tol} = 1 \times 10^{-3}$.}
+    \end{subfigure}
+
+    \vspace{0.5em}
+
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_2_low_accuracy_sequence.png}
+      \caption{$x_n$ vs. $n$, $\mathrm{tol} = 5 \times 10^{-2}$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\linewidth]{fixed_point_demo_2_high_accuracy_sequence.png}
+      \caption{$x_n$ vs. $n$, $\mathrm{tol} = 1 \times 10^{-3}$.}
+    \end{subfigure}
+  \end{figure}
+\end{eg}
 
 \end{document}
