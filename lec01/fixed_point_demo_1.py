@@ -12,8 +12,10 @@ def g(x):
 # Initial guess: x = 1 
 x = 1 
 
+# Find the fixed point of g(x) = cos(x) using the fixed-point iteration method 
 r = find_fixed_point(g, x, tol=5e-2)
 print(r) 
 
+# Find the fixed point of g(x) = cos(x) using the fixed-point iteration method with a smaller tolerance 
 r = find_fixed_point(g, x, tol=1e-3)
 print(r) 

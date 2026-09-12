@@ -2,7 +2,27 @@
 \usepackage{notes-project}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{listings}
+
 \graphicspath{{lec01/}}
+\numberwithin{figure}{section}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  frame=single,
+  framesep=6pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{gray},
+  stringstyle=\color{green!40!black},
+}
 
 \begin{document}
 
@@ -108,11 +128,13 @@
   \end{enumerate} 
 \end{conv}
 
-\begin{rem}[Error Analysis of Fixed Point Iteration Method]{fixed-point-iteration-error}
+\color{blue}\begin{rem}[Error Analysis of Fixed Point Iteration Method]{fixed-point-iteration-error}
   By using this method, we usually believe that the root, $r$, is close to the initial guess, $x_0$. Also, it should be within $x_n$ and $x_{n+1}$ forall $n$. 
 
   Which means, the error of the $n$-th iteration is $|x_n - r| \leq |x_{n+1} - x_n|$. 
-\end{rem}
+
+  PF TODO 
+\end{rem}\color{black}
 
 \begin{conv}[Optimized Fixed Point Iteration]{optimized-fpi}
   We may want to set an error tolerance, $\mathrm{tol}$, and stop the iteration when $|x_{n+1} - x_n| < \mathrm{tol}$. 
@@ -125,6 +147,8 @@
     \item Check if $|x_{n+1} - x_n| < \mathrm{tol}$, if yes, stop the iteration and return the value. 
     \item If the maximum number of iterations is reached, stop the iteration and return the value. (For some algorithms, we may want to return an error message instead.)
   \end{enumerate} 
+
+  \lstinputlisting[language=Python]{lec01/find_fixed_point_display.py}
 \end{conv}
 
 \begin{eg}[Convergent Case: Fixed Point Iteration on $x - \cos x = 0$]{cos-fixed-point}
@@ -139,20 +163,25 @@
     \item If $n$ reaches $N$, stop and return the last $x_{n+1}$.
   \end{enumerate}
 
-  Both runs spiral into the fixed point $r \approx 0.739$; a tighter tolerance just adds more steps near $r$. The cobwebs (top row) show the geometric approach; the iterate-vs-index plots (bottom row) show the same convergence as damped oscillation.
+  In Python:
+  \lstinputlisting[language=Python]{lec01/fixed_point_demo_1.py}
+
+  Both runs spiral into the fixed point $r \approx 0.739$; a tighter tolerance just adds more steps near $r$. The top row shows the iteration geometrically on the $(x, y)$ plane; the bottom row shows the same iterates plotted against their step number.
 
   \begin{figure}[h]
     \centering
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_1_low_accuracy_cobweb.png}
-      \caption{Cobweb, $\mathrm{tol} = 5 \times 10^{-2}$.}
+      \caption{Trace Iteration, $\mathrm{tol} = 5 \times 10^{-2}$.}
+      \label{fig:convergent-fpi-a}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_1_high_accuracy_cobweb.png}
-      \caption{Cobweb, $\mathrm{tol} = 1 \times 10^{-3}$.}
+      \caption{Trace Iteration, $\mathrm{tol} = 1 \times 10^{-3}$.}
+      \label{fig:convergent-fpi-b}
     \end{subfigure}
 
     \vspace{0.5em}
@@ -161,14 +190,25 @@
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_1_low_accuracy_sequence.png}
       \caption{$x_n$ vs. $n$, $\mathrm{tol} = 5 \times 10^{-2}$.}
+      \label{fig:convergent-fpi-c}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_1_high_accuracy_sequence.png}
       \caption{$x_n$ vs. $n$, $\mathrm{tol} = 1 \times 10^{-3}$.}
+      \label{fig:convergent-fpi-d}
     \end{subfigure}
+    \caption{Convergent case: fixed point iteration on $x - \cos x = 0$ from $x_0 = 1$.}
+    \label{fig:convergent-fpi}
   \end{figure}
+
+  \begin{itemize}[nosep]
+    \item Figure~\ref{fig:convergent-fpi}\subref{fig:convergent-fpi-a}: x-axis is $x$, y-axis is $y$; shows $y = g(x) = \cos x$ (blue), the diagonal $y = x$ (dashed), and an orange path that traces the iteration 
+    \item Figure~\ref{fig:convergent-fpi}\subref{fig:convergent-fpi-b}: same axes as (a); tighter $\mathrm{tol} = 1 \times 10^{-3}$ makes the orange path pack more segments around the fixed point $r$.
+    \item Figure~\ref{fig:convergent-fpi}\subref{fig:convergent-fpi-c}: x-axis is the iteration index $n$, y-axis is the iterate $x_n$; shows the sequence of iterates as damped oscillation for $\mathrm{tol} = 5 \times 10^{-2}$, with the dashed line marking the final $x_n$.
+    \item Figure~\ref{fig:convergent-fpi}\subref{fig:convergent-fpi-d}: same axes as (c); tighter run $\mathrm{tol} = 1 \times 10^{-3}$ settles visibly onto $r \approx 0.739$.
+  \end{itemize}
 \end{eg}
 
 \begin{rem}[Convergence not Guaranteed]{fixed-point-iteration-convergence}
@@ -183,13 +223,15 @@
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_2_low_accuracy_cobweb.png}
-      \caption{Cobweb, $\mathrm{tol} = 5 \times 10^{-2}$.}
+      \caption{Trace Iteration, $\mathrm{tol} = 5 \times 10^{-2}$.}
+      \label{fig:divergent-fpi-a}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_2_high_accuracy_cobweb.png}
-      \caption{Cobweb, $\mathrm{tol} = 1 \times 10^{-3}$.}
+      \caption{Trace Iteration, $\mathrm{tol} = 1 \times 10^{-3}$.}
+      \label{fig:divergent-fpi-b}
     \end{subfigure}
 
     \vspace{0.5em}
@@ -198,14 +240,55 @@
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_2_low_accuracy_sequence.png}
       \caption{$x_n$ vs. $n$, $\mathrm{tol} = 5 \times 10^{-2}$.}
+      \label{fig:divergent-fpi-c}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.45\textwidth}
       \centering
       \includegraphics[width=\linewidth]{fixed_point_demo_2_high_accuracy_sequence.png}
       \caption{$x_n$ vs. $n$, $\mathrm{tol} = 1 \times 10^{-3}$.}
+      \label{fig:divergent-fpi-d}
     \end{subfigure}
+    \caption{Divergent case: fixed point iteration on $x - 1.5 \cos x = 0$ from $x_0 = 1$.}
+    \label{fig:divergent-fpi}
   \end{figure}
-\end{eg}
+\end{eg} 
+
+\begin{rem}[Advantage and Disadvantage of Fixed Point Iteration Method]{fpi-evaluation}
+  \begin{enumerate}[nosep]
+    \item Advantage: It is easy to implement. 
+    \item Disadvantage: The convergence is not guaranteed. 
+  \end{enumerate}
+  Usually used for \emph{good initial guess} and \emph{good $g(x)$ function}. 
+\end{rem} 
+
+\section{Bisector Method}
+
+\begin{dfn}[Bisector Method]{bisector-method}
+  The idea of \emph{bisector method} is when we know that a root $r$ is in the interval $[a, b]$, then we can find the midpoint of the range and evaluate which part of the interval contains the root. We can then repeat this process until we find a sufficiently accurate approximation of the root. 
+\end{dfn} 
+
+\begin{conv}[Procedure of Bisector Method]{bisector-method-procedure}
+  The procedure of bisector method is as follows: 
+  \begin{enumerate}[nosep]
+    \item Find an interval $[a, b]$ such that $\exists r \in [a, b] \text{ st } f(r) = 0$ and $f(a)f(b) < 0$. 
+    \item Set the maximum number of iterations, $N$. 
+    \item Find the midpoint of the interval, $c = \frac{a+b}{2}$.
+    \item Evaluate $f(c)$.
+    \item If $f(a)$ and $f(c)$ have opposite signs, then set $b = c$; otherwise, set $a = c$. 
+    \item If the maximum number of iterations is reached, stop the iteration and return the value. Otherwise goto step 3. 
+  \end{enumerate} 
+\end{conv}
+
+\begin{proof}[Bisector Method Convergence]
+
+\end{proof}
+
+\begin{rem}[Error Analysis of Bisector Method]{bisector-method-error}
+  By using this method, we usually believe that the root, $r$, is in the interval $[a, b]$. 
+
+  Which means, we can have a one to one map between the number of iterations and the error tolerance, $tol$, 
+  \[tol = |a - b| \times 2^{-n}\]
+\end{rem} 
 
 \end{document}
