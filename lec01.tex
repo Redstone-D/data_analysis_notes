@@ -132,9 +132,12 @@
   By using this method, we usually believe that the root, $r$, is close to the initial guess, $x_0$. Also, it should be within $x_n$ and $x_{n+1}$ forall $n$. 
 
   Which means, the error of the $n$-th iteration is $|x_n - r| \leq |x_{n+1} - x_n|$. 
+\end{rem}
 
-  PF TODO 
-\end{rem}\color{black}
+\begin{proof}[Convergence of Fixed Point Iteration Method]
+
+\end{proof}
+\color{black}
 
 \begin{conv}[Optimized Fixed Point Iteration]{optimized-fpi}
   We may want to set an error tolerance, $\mathrm{tol}$, and stop the iteration when $|x_{n+1} - x_n| < \mathrm{tol}$. 
@@ -281,7 +284,7 @@
 \end{conv}
 
 \begin{proof}[Bisector Method Convergence]
-
+Continous Function, IVT. TODO 
 \end{proof}
 
 \begin{rem}[Error Analysis of Bisector Method]{bisector-method-error}
@@ -289,6 +292,27 @@
 
   Which means, we can have a one to one map between the number of iterations and the error tolerance, $tol$, 
   \[tol = |a - b| \times 2^{-n}\]
+\end{rem} 
+
+\section{Newton-Raphson Method} 
+
+\begin{definition}[Newton-Raphson Method](newton-raphson-method)
+  The idea of \emph{Newton-Raphson method} is to use the slope of the function at a point to find the root of the function. 
+\end{definition}
+
+\begin{conv}[Procedure of Newton-Raphson Method]{newton-raphson-method-procedure}
+  \begin{enumerate}[nosep] 
+    \item Take an initial guess $x_0$.
+    \item Set the maximum number of iterations, $N$.
+    \item Calculate the derivative of the function $f$ at the chosen point, $x_n$, call it as $t_n$. 
+    \item Define $y = t_n(x_n - x_{n-1}) + f(x_{n-1})$. \textit{Intuition: This is the equation of the tangent line at $x_{n-1}$.} 
+    \item Find the root of the tangent line, $x_n$, by solving $y = 0$. 
+    \item If the maximum number of iterations is reached, stop the iteration and return the value. Otherwise goto step 3. 
+  \end{enumerate}
+\end{conv}
+
+\begin{rem}[Error Analysis of Newton-Raphson Method]{newton-raphson-method-error} 
+  Let the $r$ to be the root, ie, $f(r) = 0$. So, the error of each step is $e_n = x_n - r$. 
 \end{rem} 
 
 \end{document}
