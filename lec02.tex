@@ -1,0 +1,84 @@
+\documentclass[12pt]{article}
+\usepackage{notes-project}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{listings}
+
+\graphicspath{{lec02/}}
+\numberwithin{figure}{section}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  frame=single,
+  framesep=6pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{gray},
+  stringstyle=\color{green!40!black},
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Lecture 2: Analytical Methods}\\[0.25em]
+  {\large Introduction to Data Analysis Techniques}\\[0.15em]
+\end{center}
+
+\section{Lagrange Interpolation} 
+
+\begin{dfn}[Interpolation]
+Methods to find a smooth function $f(x)$ that passes through a given set of points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$ 
+\end{dfn} 
+
+\begin{thm}[Unique Existence of Lagrange Interpolation]{lagrange-existence-uniqueness}
+For any set of $n+1$ distinct points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$, there exists a unique polynomial of degree at most $n$ that passes through all these points.
+\end{thm} 
+
+\begin{conv}[Lagrange Interpolation Method]
+    Given a set of $n+1$ distinct points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$. We may construct the following system of equations: 
+    \begin{align*}
+        \left\{
+        \begin{array}{cccc}
+            a_0 + a_1 x_0 + a_2 x_0^2 + \ldots + a_n x_0^n &=& y_0 \\
+            a_0 + a_1 x_1 + a_2 x_1^2 + \ldots + a_n x_1^n &=& y_1 \\
+            \vdots & & \vdots \\
+            a_0 + a_1 x_n + a_2 x_n^2 + \ldots + a_n x_n^n &=& y_n
+        \end{array} \implies 
+        \begin{bmatrix}
+            1 & x_0 & x_0^2 & \ldots & x_0^n \\
+            1 & x_1 & x_1^2 & \ldots & x_1^n \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            1 & x_n & x_n^2 & \ldots & x_n^n
+        \end{bmatrix}
+        \begin{bmatrix}
+            a_0 \\
+            a_1 \\
+            \vdots \\
+            a_n
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+            y_0 \\
+            y_1 \\
+            \vdots \\
+            y_n
+        \end{bmatrix} 
+        \right. 
+    \end{align*}
+
+    According to the \color{purple}{Theorem in Linear Algebra} \color{black}, which states that a system of $n$ linear equations with $n$ unknowns has a unique solution if $\det{A} \neq 0$, where $A$ is the coefficient matrix. 
+
+    Since we ask all points in the set to be distinct, we can know that $\det{A} \neq 0$. Therefore, there exists a unique solution $\vec a$ 
+
+    So, we can find a unique polynomial $f(x) = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n$ that passes through all the given points. 
+\end{conv}
+
+
+\end{document}

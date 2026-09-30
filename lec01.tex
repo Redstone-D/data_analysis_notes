@@ -297,22 +297,42 @@ Continous Function, IVT. TODO
 \section{Newton-Raphson Method} 
 
 \begin{definition}[Newton-Raphson Method](newton-raphson-method)
-  The idea of \emph{Newton-Raphson method} is to use the slope of the function at a point to find the root of the function. 
+  The idea of \emph{Newton-Raphson method} is to use the slope of the function at a point to find the root of the function.
 \end{definition}
 
+\begin{rem}[Intuition of Newton-Raphson Method]{newton-raphson-intuition}
+  At the current guess $x_n$, approximate $f$ by its tangent line:
+  \[y = f'(x_n)\,(x - x_n) + f(x_n).\]
+  The next guess $x_{n+1}$ is where this tangent line crosses zero. Setting $y = 0$ and solving for $x$:
+  \[0 = f'(x_n)\,(x - x_n) + f(x_n) \quad\Longrightarrow\quad x = x_n - \frac{f(x_n)}{f'(x_n)}.\]
+  This gives the update rule used in step 4 below.
+\end{rem}
+
 \begin{conv}[Procedure of Newton-Raphson Method]{newton-raphson-method-procedure}
-  \begin{enumerate}[nosep] 
+  \begin{enumerate}[nosep]
     \item Take an initial guess $x_0$.
     \item Set the maximum number of iterations, $N$.
-    \item Calculate the derivative of the function $f$ at the chosen point, $x_n$, call it as $t_n$. 
-    \item Define $y = t_n(x_n - x_{n-1}) + f(x_{n-1})$. \textit{Intuition: This is the equation of the tangent line at $x_{n-1}$.} 
-    \item Find the root of the tangent line, $x_n$, by solving $y = 0$. 
-    \item If the maximum number of iterations is reached, stop the iteration and return the value. Otherwise goto step 3. 
+    \item Calculate the derivative of the function $f$ at the chosen point, $x_n$, call it as $t_n$.
+    \item Update:
+      \[x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\]
+    \item If the maximum number of iterations is reached, stop the iteration and return the value. Otherwise goto step 3.
   \end{enumerate}
 \end{conv}
 
 \begin{rem}[Error Analysis of Newton-Raphson Method]{newton-raphson-method-error} 
   Let the $r$ to be the root, ie, $f(r) = 0$. So, the error of each step is $e_n = x_n - r$. 
+
+  Take the Taylor series expansion of $f(x)$ about $x_n$, and take the first 3 terms: \[f(x) = \sum_{k=0}^{\infty} \frac{f^{(k)}(x_n)}{k!}(x - x_n)^k \approx f(x_n) + f'(x_n)(x - x_n) + \frac{f''(x_n)}{2}(x - x_n)^2 \] 
+
+  Notice that $f(r) = 0$, so we have \[0 \approx f(x_n) + f'(x_n)(r - x_n) + \frac{f''(x_n)}{2}(r - x_n)^2\] 
+
+  Define the error of each step, $e_n = r - x_n$, so \[0 \approx f(x_n) + f'(x_n)e_n + \frac{f''(x_n)}{2}e_n^2\] 
+
+  Using the update rule, we have \[x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} \implies e_{n+1} - r =\] 
+
+  So, the error of the next step is \[e_{n+1} = r - x_{n+1} = r - \left(x_n - \frac{f(x_n)}{f'(x_n)}\right) = e_n + \frac{f(x_n)}{f'(x_n)}\] 
 \end{rem} 
+
+\color{blue} Program not done yet. TODO: add python code for Newton-Raphson method. \color{black} 
 
 \end{document}
