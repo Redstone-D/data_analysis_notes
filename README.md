@@ -29,7 +29,16 @@ The shared formatting and reference macros live in `notes-common.sty`.
 Course-specific server information lives in `notes-project.sty`. See
 `LATEX_AUTHORING_GUIDE.md` for the complete authoring and reference guide.
 
+The shared Core is synchronized from `notes_server/latex-course-repo/`.
+When updating it, preserve the course identity in `notes-project.sty`, the
+lecture and tutorial content, and the private-folder rules in `.gitignore`.
+
 ## Deployment
+
+Only `latex_target/` is published. Its `manifest.json` declares schema version
+1, project ID `data-analysis`, and this course's title. Keep the project ID
+consistent with `notes-project.sty` and the deployment workflow. Build PDFs
+locally before pushing; the deployment workflow does not compile LaTeX.
 
 Pushing a change beneath `latex_target/` to `master` runs the
 GitHub Actions workflow in `.github/workflows/deploy.yml`. It sends the

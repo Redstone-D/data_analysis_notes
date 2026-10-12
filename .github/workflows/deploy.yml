@@ -16,6 +16,10 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  NOTES_PROJECT: data-analysis
+  NOTES_SERVER_ROOT: https://notes.rua.rs
+
 jobs:
   deploy:
     name: Deploy data-analysis
@@ -39,7 +43,7 @@ jobs:
             --max-time 180 \
             --request POST \
             --header "x-api-key: $NOTES_DEPLOY_KEY" \
-            https://notes.rua.rs/deploy/data-analysis
+            "$NOTES_SERVER_ROOT/deploy/$NOTES_PROJECT"
 
       - name: Verify deployed course
         run: |
@@ -51,7 +55,7 @@ jobs:
             --connect-timeout 15 \
             --max-time 30 \
             --output "$course_page" \
-            https://notes.rua.rs/data-analysis
+            "$NOTES_SERVER_ROOT/$NOTES_PROJECT"
 
           if ! grep --quiet "lec01.pdf" "$course_page"; then
             echo "lec01.pdf is missing from the course page."
@@ -65,4 +69,4 @@ jobs:
             --connect-timeout 15 \
             --max-time 30 \
             --output /dev/null \
-            https://notes.rua.rs/data-analysis/lec01.pdf
+            "$NOTES_SERVER_ROOT/$NOTES_PROJECT/lec01.pdf"

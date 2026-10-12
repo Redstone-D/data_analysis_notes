@@ -19,4 +19,10 @@
 # PDFs accidentally built at the repository root
 /*.pdf
 
-.vscode/ 
+.vscode/
+
+# Private assignment work — kept out of the public notes repo
+/assignment/
+
+# Confidential 
+/lec_slides/

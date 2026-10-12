@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+\usepackage{notes-project}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{listings}
+
+\graphicspath{{lec04/}}
+\numberwithin{figure}{section}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  frame=single,
+  framesep=6pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{gray},
+  stringstyle=\color{green!40!black},
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Lecture 4: Random Process}\\[0.25em]
+  {\large Introduction to Data Analysis Techniques}\\[0.15em]
+\end{center}
+
+\section{Random Variable} 
+
+\section{Probability Density Function}
+
+\section{Random Number Generator} 
+
+\begin{dfn}[Pseudo Random Number Sequence]
+A \emph{pseudo random number sequence} is a sequence which looks random 
+\end{dfn} 
+
+\begin{dfn}[Pseudo Random Number Generator (PRNG)]
+A \emph{pseudo random number generator} is a deterministic algorithm which generates a pseudo random number sequence. 
+\end{dfn} 
+
+\begin{example}[Simple Generator]
+\[x_n = (a x_0 + c) \% m\]
+\end{example}
+
+
+\end{document}
