@@ -31,18 +31,109 @@
   {\large Introduction to Data Analysis Techniques}\\[0.15em]
 \end{center}
 
-\section{Lagrange Interpolation} 
+\section{Data Representation}
+
+\begin{dfn}[Finite Index Set Generator]{finite-index-set}
+  The finite index set generator is the function
+  \[
+    \Fin:\NN\to\PowerSet(\NN)
+      \defeq n\map\{i\in\NN\mid i<n\}
+  \]
+  Thus $\Fin(n)$ contains the first $n$ natural numbers, starting at $0$;
+  in particular, $\Fin(0)=\emptyset$ and $\Fin(3)=\{0,1,2\}$
+\end{dfn}
+
+\begin{dfn}[Pairing Function Generator]{pairing-function-generator}
+  The pairing function generator takes $n\in\NN$ and returns an operation
+  combining two \xref[indexed families]{real-analysis::lec01::def:indexed-family}
+  $x,y:\Fin(n+1)\to\RR$ into one indexed family with values in
+  $\RR\times\RR$, representing $n+1$ observations
+  \[
+    \begin{aligned}
+      \mathrm{pairGen} &: \Pi n:\NN.\,
+        (\Fin(n+1)\to\RR)\to(\Fin(n+1)\to\RR) \\
+      &\qquad\to\Fin(n+1)\to(\RR\times\RR) \\
+      &\defeq n\map\bigl(x\map\bigl(y\map\bigl(i\map(x(i),y(i))\bigr)\bigr)\bigr)
+    \end{aligned}
+  \]
+\end{dfn}
+
+\begin{dfn}[Pairing of Functions]{pairing-functions}
+  For a fixed $n\in\NN$, define the pairing function by applying the
+  \xref[pairing function generator]{def:pairing-function-generator} to $n$
+  \[
+    \begin{aligned}
+      \mathrm{pair}_n &: (\Fin(n+1)\to\RR)\to(\Fin(n+1)\to\RR) \\
+      &\qquad\to\bigl(\Fin(n+1)\to(\RR\times\RR)\bigr) \\
+      &\defeq \mathrm{pairGen}(n)
+    \end{aligned}
+  \]
+  For data fitting, $x(i)$ represents the input coordinate of observation
+  $i$, and $y(i)$ represents its observed output, so
+  \[
+    \mathrm{pair}_n(x)(y)(i)=(x(i),y(i))
+  \]
+\end{dfn}
+
+\begin{dfn}[Distinct Input Families]{distinct-input-families}
+  The function $\DistinctFamily$ assigns to each $n\in\NN$ the set of
+  \xref[indexed families]{real-analysis::lec01::def:indexed-family}
+  $x:\Fin(n+1)\to\RR$ with pairwise distinct values
+  \[
+    \begin{aligned}
+      \DistinctFamily &: \Pi n:\NN.\,\PowerSet(\Fin(n+1)\to\RR) \\
+      &\defeq n\map\left\{x:\Fin(n+1)\to\RR\;\middle|\;
+        \begin{gathered}
+          \forall i,k\in\Fin(n+1),\\
+          i\ne k\implies x(i)\ne x(k)
+        \end{gathered}\right\}
+    \end{aligned}
+  \]
+  Thus $x\in\DistinctFamily(n)$ means that $x$ is
+  \xref[injective]{real-analysis::lec01::def:injective-mapping}
+\end{dfn}
+
+\begin{conv}[Finite Index Ranges]{finite-index-sum-product-notation}
+  \missingprereq{Real Analysis prerequisite: generalize
+  \xref[finite summation]{real-analysis::lec01::def:finite-summation}
+  and \xref[finite products]{real-analysis::lec01::def:finite-product}
+  to families defined only on a finite interval of natural numbers,
+  allowing index $0$ and empty intervals. Only indices in the interval
+  should be evaluated; retain $0$ for an empty sum and $1$ for an empty
+  product}
+\end{conv}
+
+\section{Lagrange Interpolation}
 
 \begin{dfn}[Interpolation]
 Methods to find a smooth function $f(x)$ that passes through a given set of points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$ 
 \end{dfn} 
 
+\begin{dfn}[Lagrange Interpolation]{lagrange-interpolation}
+    For $n\in\NN$, take
+    \[
+        x\in\DistinctFamily(n),\qquad y:\Fin(n+1)\to\RR
+    \]
+    Lagrange interpolation for the
+    \xref[paired observations]{def:pairing-functions}
+    $\mathrm{pair}_n(x)(y)$ seeks a polynomial $f:\RR\to\RR$
+    of degree at most $n$ such that
+    \[
+        \forall i\in\Fin(n+1),\quad f(x(i))=y(i)
+    \]
+    The values $y(i)$ may repeat
+\end{dfn}
+
 \begin{thm}[Unique Existence of Lagrange Interpolation]{lagrange-existence-uniqueness}
-For any set of $n+1$ distinct points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$, there exists a unique polynomial of degree at most $n$ that passes through all these points.
+For any $n+1$ data points $(x_0,y_0),\ldots,(x_n,y_n)$ with pairwise distinct $x_0,\ldots,x_n$, there exists a unique polynomial of degree at most $n$ that passes through all these points
 \end{thm} 
 
+% \begin{proof}
+% \todo
+% \end{proof}
+
 \begin{conv}[Lagrange Interpolation Method]
-    Given a set of $n+1$ distinct points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$. We may construct the following system of equations: 
+    For data satisfying the \xref[Lagrange interpolation conditions]{def:lagrange-interpolation}, write $x_i\defeq x(i)$ and $y_i\defeq y(i)$ and construct the following system of equations:
     \begin{align*}
         \left\{
         \begin{array}{cccc}
@@ -75,17 +166,242 @@ For any set of $n+1$ distinct points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)
 
     According to the \color{purple}{Theorem in Linear Algebra} \color{black}, which states that a system of $n$ linear equations with $n$ unknowns has a unique solution if $\det{A} \neq 0$, where $A$ is the coefficient matrix. 
 
-    Since we ask all points in the set to be distinct, we can know that $\det{A} \neq 0$. Therefore, there exists a unique solution $\vec a$ 
+    Since $x_0,\ldots,x_n$ are pairwise distinct, $\det{A}\ne0$. Therefore, there exists a unique solution $\vec a$
 
     So, we can find a unique polynomial $f(x) = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n$ that passes through all the given points. 
 \end{conv}
 
-\begin{dfn}[Lagrange Polynomials] 
+% \begin{eg}[Two-Point Interpolation]{2-fixed-point}
+%     Set $n=1$ in the \xref[interpolation system]{conv:lagrange-interpolation-method},
+%     with $x_0\ne x_1$
+%     \[
+%         y=f(x)=a_1\cdot x+a_0
+%     \]
+%     \[
+%         \begin{cases}
+%             a_1\cdot x_0+a_0=y_0 \\
+%             a_1\cdot x_1+a_0=y_1
+%         \end{cases}
+%         \quad\Longleftrightarrow\quad
+%         \begin{bmatrix}
+%             1 & x_0 \\
+%             1 & x_1
+%         \end{bmatrix}
+%         \begin{bmatrix}a_0\\a_1\end{bmatrix}
+%         =\begin{bmatrix}y_0\\y_1\end{bmatrix}
+%     \]
+%     \[
+%         a_1=\frac{y_1-y_0}{x_1-x_0},\qquad
+%         a_0=y_0-a_1\cdot x_0
+%     \]
+%     \[
+%     \begin{aligned}
+%         f(x)&=a_0+a_1\cdot x \\
+%             &=(y_0-a_1\cdot x_0)+a_1\cdot x \\
+%             &=\left(y_0-\frac{y_1-y_0}{x_1-x_0}\cdot x_0\right)
+%               +\frac{y_1-y_0}{x_1-x_0}\cdot x \\
+%             &=y_0+\frac{y_1-y_0}{x_1-x_0}\cdot(x-x_0) \\
+%             &=y_0\cdot\frac{x-x_1}{x_0-x_1}
+%               +y_1\cdot\frac{x-x_0}{x_1-x_0}
+%     \end{aligned}
+%     \]
+%     \[
+%     \begin{aligned}
+%         f(x_0)&=a_0+a_1\cdot x_0 \\
+%               &=(y_0-a_1\cdot x_0)+a_1\cdot x_0=y_0 \\
+%         f(x_1)&=a_0+a_1\cdot x_1 \\
+%               &=\left(y_0-\frac{y_1-y_0}{x_1-x_0}\cdot x_0\right)
+%                 +\frac{y_1-y_0}{x_1-x_0}\cdot x_1=y_1
+%     \end{aligned}
+%     \]
+% \end{eg}
+
+% \begin{proof}[Derivation of the Lagrange Interpolation Formula]
+%     \[
+%     \begin{aligned}
+%         &\left[
+%         \begin{array}{ccccc|c}
+%             1 & x_0 & x_0^2 & \cdots & x_0^n & y_0 \\
+%             1 & x_1 & x_1^2 & \cdots & x_1^n & y_1 \\
+%             \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             1 & x_n & x_n^2 & \cdots & x_n^n & y_n
+%         \end{array}
+%         \right]
+%         \\[1em]
+%         &\xrightarrow[i=1,\ldots,n]{R_i\leftarrow R_i-R_0}
+%         \left[
+%         \begin{array}{ccccc|c}
+%             1 & x_0 & x_0^2 & \cdots & x_0^n & y_0 \\
+%             0 & x_1 - x_0 & x_1^2 - x_0^2 & \cdots & x_1^n - x_0^n & y_1 - y_0 \\
+%             \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             0 & x_n - x_0 & x_n^2 - x_0^2 & \cdots & x_n^n - x_0^n & y_n - y_0
+%         \end{array}
+%         \right]
+%         \\[1em]
+%         &\xrightarrow[\substack{i=1,\ldots,n\\x_i\ne x_0}]{R_i\leftarrow \frac{1}{x_i-x_0}\cdot R_i}
+%         \left[
+%         \begin{array}{ccccc|c}
+%             1 & x_0 & x_0^2 & \cdots & x_0^n & y_0 \\
+%             0 & 1 & \dfrac{x_1^2-x_0^2}{x_1-x_0} & \cdots & \dfrac{x_1^n-x_0^n}{x_1-x_0} & \dfrac{y_1-y_0}{x_1-x_0} \\[0.5em]
+%             \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             0 & 1 & \dfrac{x_n^2-x_0^2}{x_n-x_0} & \cdots & \dfrac{x_n^n-x_0^n}{x_n-x_0} & \dfrac{y_n-y_0}{x_n-x_0}
+%         \end{array}
+%         \right]
+%         \\[1em]
+%         &\frac{x_i^k-x_0^k}{x_i-x_0}
+%         = \sum_{r=0}^{k-1}x_i^{k-1-r}\cdot x_0^r
+%         \qquad (x_i\ne x_0,\ k\geq 1)
+%         \\[1em]
+%         &\xrightarrow{\text{factor and cancel}}
+%         \left[
+%         \begin{array}{ccccc|c}
+%             1 & x_0 & x_0^2 & \cdots & x_0^n & y_0 \\
+%             0 & 1 & x_1+x_0 & \cdots & \displaystyle\sum_{r=0}^{n-1}x_1^{n-1-r}\cdot x_0^r & \dfrac{y_1-y_0}{x_1-x_0} \\[0.5em]
+%             \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             0 & 1 & x_n+x_0 & \cdots & \displaystyle\sum_{r=0}^{n-1}x_n^{n-1-r}\cdot x_0^r & \dfrac{y_n-y_0}{x_n-x_0}
+%         \end{array}
+%         \right]
+%     \end{aligned}
+%     \]
+
+%     \[
+%     \begin{gathered}
+%         \xrightarrow[i=2,\ldots,n]{R_i\leftarrow R_i-R_1}
+%         \\[0.5em]
+%         \left[
+%         \begin{array}{ccccc|c}
+%             1 & x_0 & x_0^2 & \cdots & x_0^n & y_0 \\
+%             0 & 1 & x_1+x_0 & \cdots & \displaystyle\sum_{r=0}^{n-1}x_1^{n-1-r}\cdot x_0^r & \dfrac{y_1-y_0}{x_1-x_0} \\[0.5em]
+%             0 & 0 & x_2-x_1 & \cdots & \displaystyle\sum_{r=0}^{n-1}\bigl(x_2^{n-1-r}-x_1^{n-1-r}\bigr)\cdot x_0^r & \dfrac{y_2-y_0}{x_2-x_0}-\dfrac{y_1-y_0}{x_1-x_0} \\[0.5em]
+%             \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             0 & 0 & x_n-x_1 & \cdots & \displaystyle\sum_{r=0}^{n-1}\bigl(x_n^{n-1-r}-x_1^{n-1-r}\bigr)\cdot x_0^r & \dfrac{y_n-y_0}{x_n-x_0}-\dfrac{y_1-y_0}{x_1-x_0}
+%         \end{array}
+%         \right]
+%     \end{gathered}
+%     \]
+
+%     \[
+%     \begin{gathered}
+%         \xrightarrow[\substack{i=2,\ldots,n\\x_i\ne x_1}]{R_i\leftarrow \frac{1}{x_i-x_1}\cdot R_i}
+%         \\[0.5em]
+%         \left[
+%         \begin{array}{cccccc|c}
+%             1 & x_0 & x_0^2 & x_0^3 & \cdots & x_0^n & y_0 \\
+%             0 & 1 & x_1+x_0 & x_1^2+x_1\cdot x_0+x_0^2 & \cdots & \displaystyle\sum_{r=0}^{n-1}x_1^{n-1-r}\cdot x_0^r & \dfrac{y_1-y_0}{x_1-x_0} \\[0.8em]
+%             0 & 0 & 1 & x_2+x_1+x_0 & \cdots & \dfrac{\displaystyle\sum_{r=0}^{n-1}\bigl(x_2^{n-1-r}-x_1^{n-1-r}\bigr)\cdot x_0^r}{x_2-x_1} & \dfrac{\dfrac{y_2-y_0}{x_2-x_0}-\dfrac{y_1-y_0}{x_1-x_0}}{x_2-x_1} \\[0.8em]
+%             \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             0 & 0 & 1 & x_n+x_1+x_0 & \cdots & \dfrac{\displaystyle\sum_{r=0}^{n-1}\bigl(x_n^{n-1-r}-x_1^{n-1-r}\bigr)\cdot x_0^r}{x_n-x_1} & \dfrac{\dfrac{y_n-y_0}{x_n-x_0}-\dfrac{y_1-y_0}{x_1-x_0}}{x_n-x_1}
+%         \end{array}
+%         \right]
+%     \end{gathered}
+%     \]
+
+%     \[
+%         \frac{x_i^2-x_1^2+x_0\cdot(x_i-x_1)}{x_i-x_1}
+%         =x_i+x_1+x_0
+%         \qquad (i=2,\ldots,n).
+%     \]
+
+%     Fix $M$ as the preceding augmented matrix
+%     \[
+%         (x_i+x_1+x_0)-(x_2+x_1+x_0)=x_i-x_2
+%         \qquad (i=3,\ldots,n)
+%     \]
+
+%     \[
+%     \begin{gathered}
+%         \xrightarrow[i=3,\ldots,n]{R_i\leftarrow R_i-R_2}
+%         \\[0.5em]
+%         \left[
+%         \begin{array}{cccccc|c}
+%             1 & x_0 & x_0^2 & x_0^3 & \cdots & x_0^n & y_0 \\
+%             0 & 1 & x_1+x_0 & x_1^2+x_1\cdot x_0+x_0^2 & \cdots & M_{1,n} & M_{1,n+1} \\
+%             0 & 0 & 1 & x_2+x_1+x_0 & \cdots & M_{2,n} & M_{2,n+1} \\
+%             0 & 0 & 0 & x_3-x_2 & \cdots & M_{3,n}-M_{2,n} & M_{3,n+1}-M_{2,n+1} \\
+%             \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             0 & 0 & 0 & x_n-x_2 & \cdots & M_{n,n}-M_{2,n} & M_{n,n+1}-M_{2,n+1}
+%         \end{array}
+%         \right]
+%     \end{gathered}
+%     \]
+
+%     \[
+%     \begin{gathered}
+%         \xrightarrow[\substack{i=3,\ldots,n\\x_i\ne x_2}]{R_i\leftarrow \frac{1}{x_i-x_2}\cdot R_i}
+%         \\[0.5em]
+%         \left[
+%         \begin{array}{cccccc|c}
+%             1 & x_0 & x_0^2 & x_0^3 & \cdots & x_0^n & y_0 \\
+%             0 & 1 & x_1+x_0 & x_1^2+x_1\cdot x_0+x_0^2 & \cdots & M_{1,n} & M_{1,n+1} \\
+%             0 & 0 & 1 & x_2+x_1+x_0 & \cdots & M_{2,n} & M_{2,n+1} \\[0.5em]
+%             0 & 0 & 0 & 1 & \cdots & \dfrac{M_{3,n}-M_{2,n}}{x_3-x_2} & \dfrac{M_{3,n+1}-M_{2,n+1}}{x_3-x_2} \\[0.5em]
+%             \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+%             0 & 0 & 0 & 1 & \cdots & \dfrac{M_{n,n}-M_{2,n}}{x_n-x_2} & \dfrac{M_{n,n+1}-M_{2,n+1}}{x_n-x_2}
+%         \end{array}
+%         \right]
+%     \end{gathered}
+%     \]
+
+%     \todo
+% \end{proof}
+
+\begin{dfn}[Lagrange Basis Polynomial Generator]{lagrange-base-polynomials-generator}
+    \[
+    \begin{aligned}
+      \LagrangeTerm &: \Pi n:\NN.\,\DistinctFamily(n)
+        \to\Fin(n+1)\to(\RR\to\RR) \\
+      &\defeq n\map x\map j\map\biggl(t\map \\
+      &\quad\prod_0^{j-1}\left(i\map\frac{t-x(i)}{x(j)-x(i)}\right)
+        \cdot\prod_{j+1}^n\left(i\map\frac{t-x(i)}{x(j)-x(i)}\right)\biggr)
+    \end{aligned}
+    \]
+    Here $n$ is the largest data index, $j$ selects the basis polynomial,
+    and $x$ supplies the input coordinates. The output is a function of
+    $t\in\RR$, using the \xref[finite sum and product notation]{conv:finite-index-sum-product-notation}
+    for the two index ranges
 \end{dfn}
 
-\begin{example}[2 Fixed Point]
-If we are given two points $(x_0, y_0), (x_1, y_1)$, 
-\end{example} 
+% Previous draft (one factor of the basis polynomial):
+% (x_i, x_j) \map \frac{x-x_j}{x_i-x_j}
+
+\redirect[Lagrange Basis Notation]{def}{lagrange-base-polynomials}{conv:lagrange-base-polynomials}
+\begin{conv}[Lagrange Basis Notation]{lagrange-base-polynomials}
+    For fixed $n\in\NN$ and $x\in\DistinctFamily(n)$, write
+    \[
+      \LagrangeFamily\defeq\LagrangeTerm(n)(x),\qquad
+      \LagrangeFamily_j\defeq\LagrangeFamily(j)\quad(j\in\Fin(n+1))
+    \]
+\end{conv}
+
+\begin{dfn}[Lagrange Polynomial Generator]{lagrange-polynomial-generator}
+    \begin{align*}
+      \LagrangePoly : \Pi n:\NN.\,\DistinctFamily(n) \to (\Fin(n+1) \to \RR) \to (\RR \to \RR) \defeq \\
+        n \map x \map y \map t \map \sum_0^n\left(j\map y(j)\cdot\LagrangeTerm(n)(x)(j)(t)\right)
+    \end{align*} 
+\end{dfn}
+
+\begin{dfn}[Lagrange Interpolating Polynomial]{lagrange-interpolating-polynomial}
+    For $n\in\NN$, $x\in\DistinctFamily(n)$, and
+    $y:\Fin(n+1)\to\RR$, the Lagrange interpolating polynomial is
+    \[
+      f:\RR\to\RR\defeq t\map
+      \LagrangePoly(n)(x)(y)(t) 
+    \]
+\end{dfn}
+
+\begin{thm}[Interpolation at the Data Points]{lagrange-interpolation-values}
+    Let $n\in\NN$, $x\in\DistinctFamily(n)$, and
+    $y:\Fin(n+1)\to\RR$, and let $f$ be the
+    \xref[Lagrange interpolating polynomial]{def:lagrange-interpolating-polynomial}
+    for these inputs. Then
+    \[
+      \forall i\in\Fin(n+1),\quad f(x(i))=y(i)
+    \]
+\end{thm}
+
+\begin{proof}
+    \todo
+\end{proof}
 
 \section{Linear Least Squares Fit}
 

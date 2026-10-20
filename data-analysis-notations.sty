@@ -1,0 +1,26 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{data-analysis-notations}[2026/10/19 Linked Data Analysis notation]
+
+\providecommand*{\finiteIndexSetRef}{data-analysis::lec02::def:finite-index-set}
+\newcommand*{\Fin}{\ensuremath{\xref[\mathrm{Fin}]{\finiteIndexSetRef}}}
+
+\providecommand*{\distinctFamilyRef}{data-analysis::lec02::def:distinct-input-families}
+\newcommand*{\DistinctFamily}{\ensuremath{\xref[\mathrm{DistinctFamily}]{\distinctFamilyRef}}}
+
+\providecommand*{\lagrangeTermRef}{data-analysis::lec02::def:lagrange-base-polynomials-generator}
+\newcommand*{\LagrangeTerm}{\ensuremath{\xref[\mathrm{LagrangeTerm}]{\lagrangeTermRef}}}
+
+\providecommand*{\lagrangeBasisNotationRef}{data-analysis::lec02::conv:lagrange-base-polynomials}
+\newcommand*{\LagrangeFamily}{\ensuremath{\xref[L]{\lagrangeBasisNotationRef}}}
+
+\providecommand*{\lagrangePolynomialGeneratorRef}{data-analysis::lec02::def:lagrange-polynomial-generator}
+\newcommand*{\LagrangePoly}{\ensuremath{\xref[\mathrm{LagrangePoly}]{\lagrangePolynomialGeneratorRef}}}
+
+\providecommand*{\taylorGeneratorRef}{data-analysis::lec03::def:taylor-polynomial-generator}
+\newcommand*{\TaylorGen}{\ensuremath{\xref[\mathrm{TaylorGen}]{\taylorGeneratorRef}}}
+
+% The formal definition of smooth real functions is still owed by Real
+% Analysis. Replace this prerequisite marker with a link when it is available.
+\newcommand*{\SmoothRealFunctions}{%
+  \ensuremath{\missingprereq{C^{\infty}_{\RR\to\RR}}}%
+}

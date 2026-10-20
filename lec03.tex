@@ -1,0 +1,180 @@
+\documentclass[12pt]{article}
+\usepackage{notes-project}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{listings}
+
+\graphicspath{{lec03/}}
+\numberwithin{figure}{section}
+
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  frame=single,
+  framesep=6pt,
+  xleftmargin=6pt,
+  xrightmargin=6pt,
+  breaklines=true,
+  breakatwhitespace=true,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{gray},
+  stringstyle=\color{green!40!black},
+}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Lecture 3: Numerical Differentiation}\\[0.15em]
+  {\large Introduction to Data Analysis Techniques}\\[0.15em]
+\end{center}
+
+\section{Taylor Approximation}
+
+\subsection{Taylor Polynomial and Remainder}
+
+\missingprereq{Continuity, differentiability, and smooth function spaces,
+real-analysis}
+
+We write $\SmoothRealFunctions$ for functions $\RR\to\RR$ whose derivatives
+of every order, including order zero, are continuous
+
+\begin{dfn}{taylor-polynomial-generator}
+  The Taylor term constructor takes $f$, then a centre $a$, then an order
+  $n$, and returns the $n$th term as a polynomial function
+  \[
+    \begin{aligned}
+      \mathrm{TaylorGen} &: \SmoothRealFunctions\to\RR\to\NN
+        \to(\RR\to\RR)\\
+      &\defeq f\map\bigl(a\map\bigl(n\map\bigl(x\map
+        \frac{\DiffOp^n(f)(a)}{n!}\cdot(x-a)^n\bigr)\bigr)\bigr)
+    \end{aligned}
+  \]
+\end{dfn}
+
+\begin{dfn}{taylor-polynomial}
+The $n$-th order Taylor polynomial generator is defined as 
+\[\mathrm{TaylorPoly} : \SmoothRealFunctions\to\RR\to\NN\to\RR\to\RR \defeq f \map a \map N \map x \map \sum^N n \map \mathrm{TaylorGen}(f)(a)(n)(x) \]
+\end{dfn}
+
+\begin{conv}{taylor-polynomial-notation}
+
+\end{conv}
+
+\begin{dfn}{taylor-remainder}
+
+\end{dfn}
+
+\begin{thm}[Finite Taylor Expansion]{finite-taylor-expansion}
+  Let $f\in\SmoothRealFunctions$, $n\in\NN$, and $a\in I$, where
+  $I\subseteq\RR$ is an open interval. For the
+  \xref[Taylor polynomial]{def:taylor-polynomial},
+  \[
+    \begin{gathered}
+      \forall x\in I\setminus\{a\},\quad
+      \exists\xi\in\bigl(\min(a,x),\max(a,x)\bigr):\\
+      f(x)=P_{f,a,n}(x)+\frac{\DiffOp^{n+1}(f)(\xi)}{(n+1)!}
+        \cdot(x-a)^{n+1}
+    \end{gathered}
+  \]
+  At $x=a$, $f(a)=P_{f,a,n}(a)$ and the remainder is zero
+\end{thm}
+
+\subsection{Taylor Series}
+
+% Moved from lec01.tex. Preserve these semantic IDs for references to the
+% Taylor material in this document.
+\begin{dfn}[Taylor Series]{taylor-series}
+  Let $f\in\SmoothRealFunctions$ and $a\in\RR$.
+  Its \emph{Taylor-series sum} at $x$, when it exists, is
+  \[
+    f(a)+\infsum\bigl(n\map\TaylorGen(f)(a)(n)(x)\bigr)
+  \]
+  The sequence is indexed by $\NNOne$. The displayed expression equals
+  $f(x)$ precisely when $R_{f,a,N}(x)\to0$ as $N\to\infty$
+\end{dfn}
+
+\begin{rem}[Taylor Series Approximation]{taylor-series-approx}
+  We can truncate the \xref[Taylor series]{def:taylor-series} to obtain a
+  finite approximation. The
+  \xref[Taylor expansion with remainder]{thm:finite-taylor-expansion}
+  expresses its error under suitable differentiability assumptions
+
+  Adding terms does not automatically improve the approximation. The
+  remainder must be controlled; equality with the infinite series requires
+  that the remainder tend to zero as the number of terms increases
+\end{rem}
+
+\subsection{Example: Electric Field of a Dipole}
+
+\begin{eg}[Electric Field of a Dipole for $x \gg a$]{dipole-field}
+  Consider the electric field on the axis of a dipole with charges $+q$ at
+  $x=a$ and $-q$ at $x=-a$, where $a>0$ and $x>a$
+  \[
+    E=\frac{q}{4\pi\varepsilon_0}\cdot\left[
+      \frac{1}{(x-a)^2}-\frac{1}{(x+a)^2}
+    \right]
+  \]
+
+  Expanding in $a/x$ using the \xref[Taylor series]{def:taylor-series} gives
+  \[
+    E=\frac{q}{4\pi\varepsilon_0\cdot x^2}\cdot\left[
+      4\frac{a}{x}+8\left(\frac{a}{x}\right)^3
+      +12\left(\frac{a}{x}\right)^5+\cdots
+    \right]
+  \]
+
+  Keeping the first two nonzero terms gives an approximation for $x\gg a$
+  \[
+    E\approx\frac{q}{4\pi\varepsilon_0\cdot x^2}\cdot\left[
+      4\frac{a}{x}+8\left(\frac{a}{x}\right)^3
+    \right]
+  \]
+  The leading term is proportional to $x^{-3}$
+\end{eg}
+
+\subsection{Taylor Expansion in Two Variables}
+
+\todo[Write the expansion through second order, including the mixed derivative]
+
+\section{Error Orders}
+
+\todo[Define big-O notation as the step size tends to zero; explain how halving the step changes an error of order one or two]
+
+\section{Numerical Differentiation}
+
+\subsection{Forward and Backward Differences}
+
+\todo[Define both first-derivative approximations and derive their error orders from Taylor expansion]
+
+\subsection{Central Differences}
+
+\todo[Derive central approximations for the first and second derivatives and their error orders]
+
+\subsection{Programming Exercise}
+
+\todo[Implement the difference formulas for sine at x=1; compare with the exact derivatives over several step sizes]
+
+\section{First-Order Differential Equations}
+
+\todo[Define an ordinary differential equation and an initial-value problem in separate blocks]
+
+\section{Euler's Method}
+
+\todo[Introduce the time grid and numerical iterates; derive the forward Euler update and distinguish local and global errors]
+
+\subsection{Programming Exercise}
+
+\todo[Solve x'=-x with x(0)=1 and compare with exp(-t) using several time steps]
+
+\section{Second-Order Dynamics}
+
+\todo[Introduce velocity to rewrite a second-order equation as two first-order equations; derive Euler updates using the old values on both right-hand sides]
+
+\subsection{Programming Exercise}
+
+\todo[Implement the pendulum model and compare results as the time step changes]
+
+\end{document}

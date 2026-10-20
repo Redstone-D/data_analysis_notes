@@ -26,3 +26,7 @@
 
 # Confidential 
 /lec_slides/
+
+# Private midterm revision notes and compiled PDF
+/midterm01.tex
+/latex_target/midterm01.pdf
