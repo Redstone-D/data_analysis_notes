@@ -35,6 +35,9 @@ jobs:
             exit 1
           fi
 
+          notes_deploy_key="${NOTES_DEPLOY_KEY//$'\r'/}"
+          notes_deploy_key="${notes_deploy_key//$'\n'/}"
+
           curl \
             --fail-with-body \
             --silent \
@@ -42,7 +45,7 @@ jobs:
             --connect-timeout 15 \
             --max-time 180 \
             --request POST \
-            --header "x-api-key: $NOTES_DEPLOY_KEY" \
+            --header "x-api-key: $notes_deploy_key" \
             "$NOTES_SERVER_ROOT/deploy/$NOTES_PROJECT"
 
       - name: Verify deployed course
