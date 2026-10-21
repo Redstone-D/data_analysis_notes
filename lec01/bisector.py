@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from math import isfinite
 
 
 def solve_bisector(
@@ -8,7 +9,11 @@ def solve_bisector(
     max_iter: int = 100,
 ) -> float:
     """
-    Find a fixed point of the function g using the fixed-point iteration method.
+    Approximate a root of a continuous function by bisection.
+
+    Require a < b and opposite endpoint signs, unless an endpoint is
+    already a root. Return an exact root immediately; otherwise return
+    the final interval's midpoint after max_iter halvings.
 
     Parameters:
     f : function
@@ -22,12 +27,32 @@ def solve_bisector(
 
     Returns:
     float
-        The estimated fixed point of the function g.
+        The estimated root of f.
     """
-    for i in range(max_iter):
-        c = (a + b) / 2 
-        if f(c) * f(a) < 0:
+    if not isfinite(a) or not isfinite(b) or a >= b:
+        raise ValueError("Require finite endpoints with a < b.")
+    if not isinstance(max_iter, int) or max_iter < 0:
+        raise ValueError("max_iter must be a nonnegative integer.")
+    fa, fb = f(a), f(b)
+    if not isfinite(fa) or not isfinite(fb):
+        raise ValueError("Function values must be finite.")
+    if fa == 0:
+        return a
+    if fb == 0:
+        return b
+    if (fa < 0) == (fb < 0):
+        raise ValueError("Endpoint function values must have opposite signs.")
+
+    for _ in range(max_iter):
+        c = a / 2 + b / 2
+        fc = f(c)
+        if not isfinite(fc):
+            raise ValueError("Function values must be finite.")
+        if fc == 0:
+            return c
+        if (fa < 0) != (fc < 0):
             b = c
         else:
             a = c
-    return (a + b) / 2 
+            fa = fc
+    return a / 2 + b / 2

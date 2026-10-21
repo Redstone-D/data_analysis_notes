@@ -34,37 +34,56 @@
 \section{Data Representation}
 
 \begin{dfn}[Finite Index Set Generator]{finite-index-set}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Finite index sets; real-analysis, pending transfer}
+  \par\smallskip
   The finite index set generator is the function
   \[
     \Fin:\NN\to\PowerSet(\NN)
-      \defeq n\map\{i\in\NN\mid i<n\}
+      \defeq n\map\{i:\NN\mid i<n\}
   \]
   Thus $\Fin(n)$ contains the first $n$ natural numbers, starting at $0$;
   in particular, $\Fin(0)=\emptyset$ and $\Fin(3)=\{0,1,2\}$
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\Fin(n)}}}
+  \par\endgroup
 \end{dfn}
 
 \begin{dfn}[Pairing Function Generator]{pairing-function-generator}
-  The pairing function generator takes $n\in\NN$ and returns an operation
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Pairing indexed families; real-analysis, pending transfer}
+  \par\smallskip
+  The pairing function generator takes $n:\NNOne$ and returns an operation
   combining two \xref[indexed families]{real-analysis::lec01::def:indexed-family}
-  $x,y:\Fin(n+1)\to\RR$ into one indexed family with values in
-  $\RR\times\RR$, representing $n+1$ observations
+  $x,y:\Fin(n)\to\RR$ into one indexed family with values in
+  $\RR\times\RR$, representing $n$ observations
   \[
     \begin{aligned}
-      \mathrm{pairGen} &: \Pi n:\NN.\,
-        (\Fin(n+1)\to\RR)\to(\Fin(n+1)\to\RR) \\
-      &\qquad\to\Fin(n+1)\to(\RR\times\RR) \\
+      \mathrm{pairGen} &: \Pi n:\NNOne.\,
+        (\Fin(n)\to\RR)\to(\Fin(n)\to\RR) \\
+      &\qquad\to\Fin(n)\to(\RR\times\RR) \\
       &\defeq n\map\bigl(x\map\bigl(y\map\bigl(i\map(x(i),y(i))\bigr)\bigr)\bigr)
     \end{aligned}
   \]
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\mathrm{pairGen}(n)(x)(y)(i)}}}
+  \par\endgroup
 \end{dfn}
 
 \begin{dfn}[Pairing of Functions]{pairing-functions}
-  For a fixed $n\in\NN$, define the pairing function by applying the
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Pairing indexed families; real-analysis, pending transfer}
+  \par\smallskip
+  For a fixed $n:\NNOne$, define the pairing function by applying the
   \xref[pairing function generator]{def:pairing-function-generator} to $n$
   \[
     \begin{aligned}
-      \mathrm{pair}_n &: (\Fin(n+1)\to\RR)\to(\Fin(n+1)\to\RR) \\
-      &\qquad\to\bigl(\Fin(n+1)\to(\RR\times\RR)\bigr) \\
+      \mathrm{pair}_n &: (\Fin(n)\to\RR)\to(\Fin(n)\to\RR) \\
+      &\qquad\to\bigl(\Fin(n)\to(\RR\times\RR)\bigr) \\
       &\defeq \mathrm{pairGen}(n)
     \end{aligned}
   \]
@@ -73,24 +92,33 @@
   \[
     \mathrm{pair}_n(x)(y)(i)=(x(i),y(i))
   \]
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\mathrm{pair}_n(x)(y)(i)}}}
+  \par\endgroup
 \end{dfn}
 
 \begin{dfn}[Distinct Input Families]{distinct-input-families}
-  The function $\DistinctFamily$ assigns to each $n\in\NN$ the set of
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Injective indexed families; real-analysis, pending transfer}
+  \par\smallskip
+  The function $\DistinctFamily$ assigns to each $n:\NN$ the set of
   \xref[indexed families]{real-analysis::lec01::def:indexed-family}
-  $x:\Fin(n+1)\to\RR$ with pairwise distinct values
+  $x:\Fin(n)\to\RR$ with pairwise distinct values
   \[
     \begin{aligned}
-      \DistinctFamily &: \Pi n:\NN.\,\PowerSet(\Fin(n+1)\to\RR) \\
-      &\defeq n\map\left\{x:\Fin(n+1)\to\RR\;\middle|\;
+      \DistinctFamily &: \Pi n:\NN.\,\PowerSet(\Fin(n)\to\RR) \\
+      &\defeq n\map\left\{x:\Fin(n)\to\RR\;\middle|\;
         \begin{gathered}
-          \forall i,k\in\Fin(n+1),\\
+          \forall i,k:\Fin(n),\\
           i\ne k\implies x(i)\ne x(k)
         \end{gathered}\right\}
     \end{aligned}
   \]
-  Thus $x\in\DistinctFamily(n)$ means that $x$ is
+  Thus $x:\DistinctFamily(n)$ means that $x$ is
   \xref[injective]{real-analysis::lec01::def:injective-mapping}
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\DistinctFamily(n)}}}
+  \par\endgroup
 \end{dfn}
 
 \begin{conv}[Finite Index Ranges]{finite-index-sum-product-notation}
@@ -103,74 +131,84 @@
   product}
 \end{conv}
 
+\begin{conv}[Data Fitting Indices]{data-fitting-indices}
+  In data fitting, $n:\NNOne$ is the number of observations, indexed by
+  $\Fin(n)$. The parameter $m:\NN$ is the maximum polynomial degree,
+  so there are $m+1$ coefficients, indexed by $\Fin(m+1)$
+
+  Finite data, vector coordinates, and matrix rows and columns are indexed
+  from $0$. A family of length $k$ has indices $0,\ldots,k-1$
+\end{conv}
+
 \section{Lagrange Interpolation}
 
 \begin{dfn}[Interpolation]
-Methods to find a smooth function $f(x)$ that passes through a given set of points $(x_0, y_0), (x_1, y_1), \ldots, (x_n, y_n)$ 
+Methods to find a smooth function $f(x)$ that passes through $n$ given points $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$
 \end{dfn} 
 
 \begin{dfn}[Lagrange Interpolation]{lagrange-interpolation}
-    For $n\in\NN$, take
+    For $n:\NNOne$, take
     \[
-        x\in\DistinctFamily(n),\qquad y:\Fin(n+1)\to\RR
+        x:\DistinctFamily(n),\qquad y:\Fin(n)\to\RR
     \]
     Lagrange interpolation for the
     \xref[paired observations]{def:pairing-functions}
     $\mathrm{pair}_n(x)(y)$ seeks a polynomial $f:\RR\to\RR$
-    of degree at most $n$ such that
+    of degree at most $n-1$ such that
     \[
-        \forall i\in\Fin(n+1),\quad f(x(i))=y(i)
+        \forall i:\Fin(n),\quad f(x(i))=y(i)
     \]
     The values $y(i)$ may repeat
 \end{dfn}
 
 \begin{thm}[Unique Existence of Lagrange Interpolation]{lagrange-existence-uniqueness}
-For any $n+1$ data points $(x_0,y_0),\ldots,(x_n,y_n)$ with pairwise distinct $x_0,\ldots,x_n$, there exists a unique polynomial of degree at most $n$ that passes through all these points
+For any $n:\NNOne$ data points $(x_0,y_0),\ldots,(x_{n-1},y_{n-1})$ with pairwise distinct input coordinates, there exists a unique polynomial of degree at most $n-1$ that passes through all these points
 \end{thm} 
 
 % \begin{proof}
-% \todo
+% \todo (omitted)
 % \end{proof}
 
 \begin{conv}[Lagrange Interpolation Method]
     For data satisfying the \xref[Lagrange interpolation conditions]{def:lagrange-interpolation}, write $x_i\defeq x(i)$ and $y_i\defeq y(i)$ and construct the following system of equations:
     \begin{align*}
         \left\{
-        \begin{array}{cccc}
-            a_0 + a_1 x_0 + a_2 x_0^2 + \ldots + a_n x_0^n &=& y_0 \\
-            a_0 + a_1 x_1 + a_2 x_1^2 + \ldots + a_n x_1^n &=& y_1 \\
-            \vdots & & \vdots \\
-            a_0 + a_1 x_n + a_2 x_n^2 + \ldots + a_n x_n^n &=& y_n
+        \begin{array}{c}
+            \sum_0^{n-1}(j\map a_j\cdot x_0^j)=y_0 \\
+            \sum_0^{n-1}(j\map a_j\cdot x_1^j)=y_1 \\
+            \vdots \\
+            \sum_0^{n-1}(j\map a_j\cdot x_{n-1}^j)=y_{n-1}
         \end{array} \implies 
         \begin{bmatrix}
-            1 & x_0 & x_0^2 & \ldots & x_0^n \\
-            1 & x_1 & x_1^2 & \ldots & x_1^n \\
+            1 & x_0 & x_0^2 & \ldots & x_0^{n-1} \\
+            1 & x_1 & x_1^2 & \ldots & x_1^{n-1} \\
             \vdots & \vdots & \vdots & \ddots & \vdots \\
-            1 & x_n & x_n^2 & \ldots & x_n^n
+            1 & x_{n-1} & x_{n-1}^2 & \ldots & x_{n-1}^{n-1}
         \end{bmatrix}
         \begin{bmatrix}
             a_0 \\
             a_1 \\
             \vdots \\
-            a_n
+            a_{n-1}
         \end{bmatrix}
         =
         \begin{bmatrix}
             y_0 \\
             y_1 \\
             \vdots \\
-            y_n
+            y_{n-1}
         \end{bmatrix} 
         \right. 
     \end{align*}
 
     According to the \color{purple}{Theorem in Linear Algebra} \color{black}, which states that a system of $n$ linear equations with $n$ unknowns has a unique solution if $\det{A} \neq 0$, where $A$ is the coefficient matrix. 
 
-    Since $x_0,\ldots,x_n$ are pairwise distinct, $\det{A}\ne0$. Therefore, there exists a unique solution $\vec a$
+    Since $x_0,\ldots,x_{n-1}$ are pairwise distinct, $\det{A}\ne0$. Therefore, there exists a unique solution $\vec a$
 
-    So, we can find a unique polynomial $f(x) = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n$ that passes through all the given points. 
+    So, we can find a unique polynomial $f(x)=\sum_0^{n-1}(j\map a_j\cdot x^j)$ that passes through all the given points
 \end{conv}
 
+% Archived draft below uses n as the largest data index
 % \begin{eg}[Two-Point Interpolation]{2-fixed-point}
 %     Set $n=1$ in the \xref[interpolation system]{conv:lagrange-interpolation-method},
 %     with $x_0\ne x_1$
@@ -342,23 +380,25 @@ For any $n+1$ data points $(x_0,y_0),\ldots,(x_n,y_n)$ with pairwise distinct $x
 %     \end{gathered}
 %     \]
 
-%     \todo
+%     \todo (omitted)
 % \end{proof}
 
 \begin{dfn}[Lagrange Basis Polynomial Generator]{lagrange-base-polynomials-generator}
     \[
     \begin{aligned}
-      \LagrangeTerm &: \Pi n:\NN.\,\DistinctFamily(n)
-        \to\Fin(n+1)\to(\RR\to\RR) \\
+      \LagrangeTerm &: \Pi n:\NNOne.\,\DistinctFamily(n)
+        \to\Fin(n)\to(\RR\to\RR) \\
       &\defeq n\map x\map j\map\biggl(t\map \\
       &\quad\prod_0^{j-1}\left(i\map\frac{t-x(i)}{x(j)-x(i)}\right)
-        \cdot\prod_{j+1}^n\left(i\map\frac{t-x(i)}{x(j)-x(i)}\right)\biggr)
+        \cdot\prod_{j+1}^{n-1}\left(i\map\frac{t-x(i)}{x(j)-x(i)}\right)\biggr)
     \end{aligned}
     \]
-    Here $n$ is the largest data index, $j$ selects the basis polynomial,
+    Here $n$ is the number of observations, $j$ selects the basis polynomial,
     and $x$ supplies the input coordinates. The output is a function of
-    $t\in\RR$, using the \xref[finite sum and product notation]{conv:finite-index-sum-product-notation}
+    $t:\RR$, using the \xref[finite sum and product notation]{conv:finite-index-sum-product-notation}
     for the two index ranges
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\LagrangeTerm(n)(x)(j)(t)}}}
+    % LaTeX (basis function): \LagrangeTerm(n)(x)(j)
 \end{dfn}
 
 % Previous draft (one factor of the basis polynomial):
@@ -366,23 +406,26 @@ For any $n+1$ data points $(x_0,y_0),\ldots,(x_n,y_n)$ with pairwise distinct $x
 
 \redirect[Lagrange Basis Notation]{def}{lagrange-base-polynomials}{conv:lagrange-base-polynomials}
 \begin{conv}[Lagrange Basis Notation]{lagrange-base-polynomials}
-    For fixed $n\in\NN$ and $x\in\DistinctFamily(n)$, write
+    For fixed $n:\NNOne$ and $x:\DistinctFamily(n)$, write
     \[
       \LagrangeFamily\defeq\LagrangeTerm(n)(x),\qquad
-      \LagrangeFamily_j\defeq\LagrangeFamily(j)\quad(j\in\Fin(n+1))
+      \LagrangeFamily_j\defeq\LagrangeFamily(j)\quad(j:\Fin(n))
     \]
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\LagrangeFamily_j(t)}}}
 \end{conv}
 
 \begin{dfn}[Lagrange Polynomial Generator]{lagrange-polynomial-generator}
     \begin{align*}
-      \LagrangePoly : \Pi n:\NN.\,\DistinctFamily(n) \to (\Fin(n+1) \to \RR) \to (\RR \to \RR) \defeq \\
-        n \map x \map y \map t \map \sum_0^n\left(j\map y(j)\cdot\LagrangeTerm(n)(x)(j)(t)\right)
+      \LagrangePoly : \Pi n:\NNOne.\,\DistinctFamily(n) \to (\Fin(n) \to \RR) \to (\RR \to \RR) \defeq \\
+        n \map x \map y \map t \map \sum_0^{n-1}\left(j\map y(j)\cdot\LagrangeTerm(n)(x)(j)(t)\right)
     \end{align*} 
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\LagrangePoly(n)(x)(y)(t)}}}
+    % LaTeX (polynomial function): \LagrangePoly(n)(x)(y)
 \end{dfn}
 
 \begin{dfn}[Lagrange Interpolating Polynomial]{lagrange-interpolating-polynomial}
-    For $n\in\NN$, $x\in\DistinctFamily(n)$, and
-    $y:\Fin(n+1)\to\RR$, the Lagrange interpolating polynomial is
+    For $n:\NNOne$, $x:\DistinctFamily(n)$, and
+    $y:\Fin(n)\to\RR$, the Lagrange interpolating polynomial is
     \[
       f:\RR\to\RR\defeq t\map
       \LagrangePoly(n)(x)(y)(t) 
@@ -390,21 +433,365 @@ For any $n+1$ data points $(x_0,y_0),\ldots,(x_n,y_n)$ with pairwise distinct $x
 \end{dfn}
 
 \begin{thm}[Interpolation at the Data Points]{lagrange-interpolation-values}
-    Let $n\in\NN$, $x\in\DistinctFamily(n)$, and
-    $y:\Fin(n+1)\to\RR$, and let $f$ be the
+    Let $n:\NNOne$, $x:\DistinctFamily(n)$, and
+    $y:\Fin(n)\to\RR$, and let $f$ be the
     \xref[Lagrange interpolating polynomial]{def:lagrange-interpolating-polynomial}
     for these inputs. Then
     \[
-      \forall i\in\Fin(n+1),\quad f(x(i))=y(i)
+      \forall i:\Fin(n),\quad f(x(i))=y(i)
     \]
 \end{thm}
 
 \begin{proof}
-    \todo
+    \todo (omitted)
 \end{proof}
+
+\begin{rem}[Limitations of Exact Interpolation]{lagrange-interpolation-limitations}
+    When observations contain measurement errors, exact interpolation
+    also fits those errors; this may cause \emph{overfitting}
+\end{rem}
+
+\begin{rem}[Lagrange Construction Summary]{lagrange-construction-summary}
+    Fix $n:\NNOne$ and $x:\DistinctFamily(n)$. Each
+    \xref[basis polynomial]{def:lagrange-base-polynomials-generator}
+    $\LagrangeFamily_j:\RR\to\RR$ uses the same input coordinates.
+    For each $i:\Fin(n)$ with $i\ne j$, form the factor
+    \[
+      \frac{t-x(i)}{x(j)-x(i)}
+    \]
+    Multiplying these $n-1$ factors gives $\LagrangeFamily_j(t)$.
+    It equals $1$ at $t=x(j)$ and $0$ at the other input coordinates
+
+    Multiply each basis polynomial by its observed value $y(j)$ and sum
+    \[
+      f(t)=\sum_0^{n-1}\left(j\map y(j)\cdot\LagrangeFamily_j(t)\right)
+    \]
+    The resulting \xref[interpolating polynomial]{def:lagrange-interpolating-polynomial}
+    passes through all $n$ observations, as stated in
+    \xref[interpolation at the data points]{thm:lagrange-interpolation-values}
+\end{rem}
 
 \section{Linear Least Squares Fit}
 
+\begin{conv}[Finite Real Vectors]{finite-real-vectors}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Finite real vectors; real-analysis, pending transfer}
+  \par\smallskip
+    For $k:\NN$, write
+    \[
+      \RealVectors{k}\defeq(\Fin(k)\to\RR)
+    \]
+    For a coefficient vector $c:\RealVectors{k}$, its coordinate
+    indexed by $j:\Fin(k)$ is written $c(j)$
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\RealVectors{k}}}}
+  \par\endgroup
+\end{conv}
+
+\begin{dfn}[Polynomial Model Generator]{linear-model-generator}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Polynomial functions from coefficient vectors; real-analysis, pending transfer}
+  \par\smallskip
+    The polynomial model generator takes a maximum degree $m:\NN$
+    and a coefficient vector $c:\RealVectors{m+1}$, and returns a
+    polynomial function
+    \[
+    \begin{aligned}
+      \PolynomialModelGen &: \Pi m:\NN.\,\RealVectors{m+1}\to(\RR\to\RR) \\
+      &\defeq m\map c\map\left(t\map
+        \sum_0^m\left(j\map c(j)\cdot t^j\right)\right)
+    \end{aligned}
+    \]
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\PolynomialModelGen(m)(c)(t)}}}
+    % LaTeX (polynomial function): \PolynomialModelGen(m)(c)
+  \par\endgroup
+\end{dfn}
+
+\begin{rem}
+    The output has degree at most $m$.
+    The model is linear in its coefficients
+\end{rem}
+
+\begin{eg}{straight-line-model}
+    A straight-line model has two coefficients. For $c:\RealVectors{2}$,
+    \[
+      \PolynomialModelGen(1)(c)=t\map c(0)+c(1)\cdot t
+    \]
+\end{eg}
+
+\begin{dfn}[Squared Error Generator]{squared-error}
+    For $n:\NNOne$ and indexed families $x,y:\Fin(n)\to\RR$,
+    the squared error generator returns an operator that assigns
+    to each candidate function $f:\RR\to\RR$ the sum of the squared
+    distances between its predicted outputs and the observations
+    \[
+    \begin{aligned}
+      \SquaredError &: \Pi n:\NNOne.\,
+        (\Fin(n)\to\RR)\to(\Fin(n)\to\RR) \\
+      &\qquad\to\bigl((\RR\to\RR)\to\RR\bigr) \\
+      &\defeq n\map x\map y\map f\map
+        \sum_0^{n-1}\left(i\map\dist{f(x(i))}{y(i)}^2\right)
+    \end{aligned}
+    \]
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\SquaredError(n)(x)(y)(f)}}}
+    % LaTeX (error operator): \SquaredError(n)(x)(y)
+\end{dfn}
+
+\begin{dfn}[Polynomial Error Generator]{polynomial-error-generator}
+    For $n$ observations and a maximum polynomial degree $m$, the polynomial error
+    generator assigns to each coefficient vector the sum of squared errors
+    of its generated polynomial
+    \[
+    \begin{aligned}
+      \PolyError &: \Pi n:\NNOne.\,\Pi m:\NN.\,
+        (\Fin(n)\to\RR) \to(\Fin(n)\to\RR)\to(\RealVectors{m+1}\to\RR) \\
+      &\defeq n\map m\map x\map y\map c\map \\
+      &\qquad\SquaredError(n)(x)(y)\bigl(\PolynomialModelGen(m)(c)\bigr)
+    \end{aligned}
+    \]
+    Thus, after supplying the counts and observations,
+    \[
+      \PolyError(n)(m)(x)(y):\RealVectors{m+1}\to\RR
+    \]
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\PolyError(n)(m)(x)(y)(c)}}}
+    % LaTeX (coefficient-error operator): S\defeq\PolyError(n)(m)(x)(y)
+\end{dfn}
+
+\begin{rem}[Polynomial Error Intuition]{polynomial-error-intuition}
+    Given a coefficient vector $c$, $\PolyError(n)(m)(x)(y)(c)$ uses
+    $\PolynomialModelGen(m)(c)$ to predict an output at each observed
+    input $x(i)$. It squares the distance between each prediction and
+    the observed output $y(i)$, then adds these values over all $n$
+    observations. The result is the total squared error of the generated
+    polynomial on the data
+\end{rem}
+
+\begin{conv}[Error Function for Fixed Data]{least-squares-error-function}
+    Fix $n:\NNOne$, $m:\NN$, and observations $x,y:\Fin(n)\to\RR$.
+    Construct the coefficient-error function
+    \[
+      S:\RealVectors{m+1}\to\RR
+        \defeq\PolyError(n)(m)(x)(y)
+    \]
+\end{conv}
+
+\begin{rem}
+    The notation $S$ is local to these choices. In each derivation or
+    program, construct $S$ first.
+\end{rem}
+
+\redirect[Comparing Two Straight-Line Fits]{eg}{straight-line-squared-error}{tut02::eg:straight-line-squared-error}
+
+\begin{dfn}[Coordinate Partial Derivative]{coordinate-partial-derivative}
+    % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+    \leavevmode\par
+    \begingroup\color{notesmissingprereq}
+    For $k:\NNOne$, $j:\Fin(k)$, and differentiable
+    $f:\RealVectors{k}\to\RR$, define
+    \[
+      \PartialD_j(f):\RealVectors{k}\to\RR
+        \defeq c\map\lim_{h\to0}\frac{f(c+h\cdot e_j)-f(c)}{h}
+    \]
+    Here $e_j(i)\defeq1$ if $i=j$, and $0$ otherwise; vector operations
+    act coordinatewise. Only coordinate $j$ varies
+    \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\PartialD_j(f)(c)}}}
+    \par\endgroup
+\end{dfn}
+
+\begin{dfn}[General Least Squares Fit]{linear-least-squares-error}
+    Fix $n$, $m$, $x$, and $y$, and construct $S = \PolyError(n)(m)(x)(y)$. If we propose $c:\RealVectors{m+1}$ as a least-squares fit, then
+    \[\forall c' : \RealVectors{m+1},\ S(c') \geq S(c)\]
+\end{dfn}
+
+\begin{thm}[Polynomial Least Squares Derivatives]{straight-line-least-squares-equations}
+    Fix $n:\NNOne$, $m:\NN$, and observations $x,y:\Fin(n)\to\RR$,
+    and construct $S\defeq\PolyError(n)(m)(x)(y)$.
+    For $c:\RealVectors{m+1}$ and $j:\Fin(m+1)$
+
+    The vector $c$ is a least-squares fit if and only if
+    \[
+      \forall j:\Fin(m+1),\quad \PartialD_j(S)(c)=0
+    \]
+    These give $m+1$ linear equations in the $m+1$ coefficients
+\end{thm}
+
+\begin{rem}[Proof Intuition]{polynomial-least-squares-proof-intuition}
+    \begin{itemize}[nosep]
+        \item The polynomial model is linear in its coefficients, so $S$
+            is a quadratic function of those coefficients
+        \item Differentiate each squared residual using the chain rule
+            to obtain the displayed partial derivatives
+        \item At a minimum, varying any one coefficient must give zero
+            derivative, so every $\PartialD_j(S)(c)$ vanishes
+        \item Conversely, expand $S(c+h)-S(c)$ for any coefficient change
+            $h$. If all partial derivatives vanish, the linear terms
+            cancel and only nonnegative squares remain, so $c$ is a
+            global minimum
+    \end{itemize}
+\end{rem}
+
+\begin{thm}[Normal Equations]{linear-system-of-sloving-least-squares-fit}
+    % Preserve the former convention anchor for existing PDF links
+    \hypertarget{notes.conv.linear-system-of-sloving-least-squares-fit}{}
+    \label{conv:linear-system-of-sloving-least-squares-fit}
+    Fix $n:\NNOne$, $m:\NN$, and $x,y:\Fin(n)\to\RR$, and construct
+    $S\defeq\PolyError(n)(m)(x)(y)$. A vector $c:\RealVectors{m+1}$
+    is a least-squares fit if and only if it satisfies the
+    \emph{normal equations}: for every $j:\Fin(m+1)$,
+    \[
+      \sum_0^m\left(k\map
+        \left(\sum_0^{n-1}\bigl(i\map x(i)^{j+k}\bigr)\right)
+        \cdot c(k)\right)
+      =\sum_0^{n-1}\bigl(i\map y(i)\cdot x(i)^j\bigr)
+    \]
+    For $r:\NN$, abbreviate the known data sums by
+    \[
+      A_r\defeq\sum_0^{n-1}\bigl(i\map x(i)^r\bigr),\qquad
+      b_r\defeq\sum_0^{n-1}\bigl(i\map y(i)\cdot x(i)^r\bigr)
+    \]
+    Since $A_0=n$, the expanded system has the pattern
+    \[
+      \begin{cases}
+        n\cdot c(0)+\ldots+A_m\cdot c(m)=b_0\\
+        A_1\cdot c(0)+\ldots+A_{m+1}\cdot c(m)=b_1\\
+        \qquad\vdots\\
+        A_m\cdot c(0)+\ldots+A_{2m}\cdot c(m)=b_m
+      \end{cases}
+    \]
+    Take rows $j=0,\ldots,m$, with coefficients indexed by $k=0,\ldots,m$.
+    This is a linear system for $c(0),\ldots,c(m)$, solvable using
+    Gaussian elimination
+\end{thm}
+
+\begin{proof}[Derivation of the Normal Equations]
+    \leavevmode\par
+    For a coefficient vector $a:\RealVectors{m+1}$, write
+    $p_a\defeq\PolynomialModelGen(m)(a)$. Unfolding the error generators gives
+    \begin{align*}
+      \PartialD_j(S)(c)
+      &= \PartialD_j(\PolyError(n)(m)(x)(y))(c)\\
+      &= \PartialD_j\bigl(a\map\SquaredError(n)(x)(y)(p_a)\bigr)(c)\\
+      &= \PartialD_j\left(a\map\sum_0^{n-1}\left(i\map
+          \abs{y(i)-p_a(x(i))}^2\right)\right)(c)\\
+      &= \PartialD_j\left(a\map\sum_0^{n-1}\left(i\map
+          \bigl(y(i)-p_a(x(i))\bigr)^2\right)\right)(c)
+    \end{align*}
+    The last equality uses $|u|^2=u^2$ for real $u$
+
+    Only coefficient $a(j)$ varies when taking $\PartialD_j$, so
+    \[
+      \PartialD_j\bigl(a\map p_a(x(i))\bigr)(c)=x(i)^j
+    \]
+    The chain rule therefore gives
+    \begin{align*}
+      &\PartialD_j\left(a\map\bigl(y(i)-p_a(x(i))\bigr)^2\right)(c)\\
+      &\qquad=2\cdot\bigl(y(i)-p_c(x(i))\bigr)\cdot\bigl(-x(i)^j\bigr)\\
+      &\qquad=2\cdot\bigl(p_c(x(i))-y(i)\bigr)\cdot x(i)^j
+    \end{align*}
+    The minus sign comes from differentiating $y(i)-p_a(x(i))$.
+    Differentiating the finite sum term by term now gives
+    \[
+      \PartialD_j(S)(c)
+        =2\cdot\sum_0^{n-1}\left(i\map
+          \bigl(p_c(x(i))-y(i)\bigr)
+          \cdot x(i)^j\right)
+    \]
+    Set every partial derivative equal to zero and divide each equation
+    by $2$. For every $j:\Fin(m+1)$, this gives
+    \[
+      \sum_0^{n-1}\left(i\map
+        \left(\sum_0^m\bigl(k\map c(k)\cdot x(i)^k\bigr)-y(i)\right)
+        \cdot x(i)^j\right)=0
+    \]
+    Expanding and collecting the coefficients gives the
+    \emph{normal equations}, one for each $j:\Fin(m+1)$:
+    \[
+      \sum_0^m\left(k\map
+        \left(\sum_0^{n-1}\bigl(i\map x(i)^{j+k}\bigr)\right)
+        \cdot c(k)\right)
+      =\sum_0^{n-1}\bigl(i\map y(i)\cdot x(i)^j\bigr)
+    \]
+    These are the normal equations stated above
+\end{proof}
+
+\begin{cor}[Straight-Line Fit]{straight-line-normal-equations}
+    Fix $n:\NNOne$ and $x,y:\Fin(n)\to\RR$, and construct
+    $S\defeq\PolyError(n)(1)(x)(y)$. The vector $c:\RealVectors{2}$
+    gives a least-squares line $t\map c(0)+c(1)\cdot t$ if and only if
+    \[
+      \begin{cases}
+        n\cdot c(0)
+          +\left(\displaystyle\sum_0^{n-1}\bigl(i\map x(i)\bigr)\right)
+            \cdot c(1)
+          =\displaystyle\sum_0^{n-1}\bigl(i\map y(i)\bigr)\\[1em]
+        \left(\displaystyle\sum_0^{n-1}\bigl(i\map x(i)\bigr)\right)
+          \cdot c(0)
+          +\left(\displaystyle\sum_0^{n-1}\bigl(i\map x(i)^2\bigr)\right)
+            \cdot c(1)
+          =\displaystyle\sum_0^{n-1}\bigl(i\map x(i)\cdot y(i)\bigr)
+      \end{cases}
+    \]
+    Calculate the sums from the observations, then solve these two linear
+    equations for $c(0)$ and $c(1)$
+\end{cor}
+
+\begin{proof}
+    Substitute $m=1$ and $j=0,1$ into the
+    \xref[normal equations]{thm:linear-system-of-sloving-least-squares-fit}
+\end{proof}
+
+\begin{cor}[Line Through the Origin]{origin-line-least-squares}
+    Fix $n:\NNOne$ and $x,y:\Fin(n)\to\RR$. For lines $t\map a\cdot t$,
+    construct
+    \[
+      S:\RR\to\RR
+        \defeq a\map\SquaredError(n)(x)(y)(t\map a\cdot t)
+    \]
+    If at least one $x(i)$ is nonzero, the unique minimizing slope is
+    \[
+      a^*=\frac{\displaystyle\sum_0^{n-1}\bigl(i\map x(i)\cdot y(i)\bigr)}
+        {\displaystyle\sum_0^{n-1}\bigl(i\map x(i)^2\bigr)}
+    \]
+    In the straight-line model, this fixes $c(0)=0$ and solves only for
+    the slope $c(1)=a^*$
+\end{cor}
+
+\begin{proof}
+    Set the derivative of $S$ equal to zero and solve for $a$.
+    The coefficient of $a^2$ is
+    $\sum_0^{n-1}\bigl(i\map x(i)^2\bigr)>0$, so this stationary point
+    is the unique minimum
+\end{proof}
+
+
 \section{General Least Square Fit}
+
+\begin{dfn}[Model Family]{model-family}
+    For $k:\NNOne$, a model family with $k$ parameters is a function
+    \[
+      F:\RealVectors{k}\to(\RR\to\RR)
+    \]
+    A vector $c:\RealVectors{k}$ supplies the settings; $F(c)$ is the
+    resulting function, and $F(c)(t)$ is its output at input $t$
+\end{dfn}
+
+\begin{rem} 
+Fix $n:\NNOne$ and observations $x,y:\Fin(n)\to\RR$, and construct
+\[
+  S:\RealVectors{k}\to\RR
+    \defeq c\map\SquaredError(n)(x)(y)(F(c))
+\]
+If $F(c)(t)$ is linear in the coefficients, the same derivative method
+produces a linear system whose solutions minimize $S$.
+For fixed functions $g:\Fin(k)\to(\RR\to\RR)$, this includes
+$F(c)(t)=\sum_0^{k-1}\bigl(j\map c(j)\cdot g(j)(t)\bigr)$,
+even when the functions $g(j)$ are not polynomials.
+For a general differentiable model family, setting all partial derivatives
+to zero finds stationary candidates; the equations may be nonlinear and
+minimality needs a separate check
+\end{rem} 
 
 \end{document}

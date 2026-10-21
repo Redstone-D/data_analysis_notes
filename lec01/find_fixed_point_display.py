@@ -9,7 +9,7 @@ def find_fixed_point(
         x_new = g(x)
         print(f"Iteration {i+1}: x = {x_new}, g(x) = {g(x_new)}")
         if abs(x_new - x) < tol:
-            print(f"Converged after {i+1} iterations.")
+            print(f"Step tolerance met after {i+1} iterations.")
             return x_new
         x = x_new
     raise ValueError("Fixed point not found within max_iter.")

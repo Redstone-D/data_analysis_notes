@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+\usepackage{notes-project}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Tutorial 3}\\[0.25em]
+  {\large Introduction to Data Analysis Techniques}\\[0.15em]
+\end{center}
+
+\section{Derivatives and Euler's Method}
+
+\begin{eg}[Derivative Review]{difference-formulas-by-hand}
+  Consider
+  \[
+    f:\RR\to\RR\defeq x\map 1+x+x^2+x^3+x^4
+  \]
+  Work at $x=0$ with step $h=\frac1{10}$
+  \begin{enumerate}
+    \item Find $\DiffOp^k(f)(0)$ for $k=0,\ldots,4$. Construct the
+      Taylor polynomial through order $4$ centred at $0$.
+      What is its remainder function?
+    \item Construct the forward, backward, and central first-derivative
+      approximations $f'_{h,+}$, $f'_{h,-}$, and $f'_{h,0}$, and the
+      central second-derivative approximation $f''_{h,0}$.
+      Give each function's type and rule, using the
+      \xref[difference conventions]{lec03::conv:forward-difference}
+      in Lecture 3
+    \item Calculate all four approximations at $0$ for $h=\frac1{10}$.
+      Make a table of the approximate value, exact target value, and
+      signed error, using computed minus target
+    \item Verify that the central first-derivative approximation is
+      the average of the forward and backward approximations.
+      What does the average $\frac{f(h)+f(-h)}2$ approximate instead?
+  \end{enumerate}
+
+  % Write your solution here
+\end{eg}
+
+\newpage
+
+\begin{eg}[Second-Order Euler by Hand]{second-order-euler-by-hand}
+  Consider the initial-value problem
+  \[
+    \forall x\in\RR,\quad \DiffOp^2(f)(x)=-f(x),\qquad
+    f(0)=1,\qquad \DiffOp(f)(0)=0
+  \]
+  Apply forward Euler with $x_0=0$, step $h=\frac12$, and $N=2$ steps
+  \begin{enumerate}
+    \item Introduce $v\defeq\DiffOp(f)$ and rewrite the equation as a
+      system of two first-order ODEs. Identify $g(x,y,v)$ in the
+      \xref[second-order Euler convention]{lec03::conv:second-order-euler}
+    \item State the types and initial values of $f^\dagger$ and $f'$.
+      Write their Euler updates. Which values must be used on the
+      right-hand sides at each step?
+    \item Calculate both steps and complete the table
+      \[
+        \begin{array}{c|c|c|c}
+          n & x_n & f^\dagger(x_n) & f'(x_n)\\
+          \hline
+          0 & 0       & \phantom{00000} & \phantom{00000}\\
+          1 & \frac12 &                 &                 \\
+          2 & 1       &                 &
+        \end{array}
+      \]
+    \item For comparison, the exact solution is $f(x)=\cos(x)$.
+      Using radians, calculate the signed errors in $f^\dagger(1)$
+      and $f'(1)$. Use the correct exact target for each
+    \item Match your two tracked functions and initial values to
+      $U(0)$, $U(1)$, and $a$ in the
+      \xref[general-order convention]{lec03::conv:general-order-euler}
+  \end{enumerate}
+
+  % Write your solution here
+\end{eg}
+
+\end{document}

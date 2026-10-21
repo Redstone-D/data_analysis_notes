@@ -15,6 +15,6 @@ b = 1
 r = solve_bisector(f, a, b, max_iter=10)
 print(r) 
 
-# Find the root using the bisector method with a smaller tolerance 
+# Use more halvings to obtain a tighter error bound
 r = solve_bisector(f, a, b, max_iter=100)
 print(r) 

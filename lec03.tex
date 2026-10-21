@@ -33,15 +33,22 @@
 
 \section{Taylor Approximation}
 
-\subsection{Taylor Polynomial and Remainder}
+\begin{conv}[Standing Smoothness Assumption]{smoothness-assumption}
+  \missingprereq{Continuity, differentiability, and smooth function spaces;
+  real-analysis}
 
-\missingprereq{Continuity, differentiability, and smooth function spaces,
-real-analysis}
-
-We write $\SmoothRealFunctions$ for functions $\RR\to\RR$ whose derivatives
-of every order, including order zero, are continuous
+  Unless stated otherwise, every function $f:\RR\to\RR$ considered in
+  this lecture is assumed to satisfy $f\in\SmoothRealFunctions$.
+  This means that its derivatives of every order, including order zero,
+  are continuous
+\end{conv}
 
 \begin{dfn}{taylor-polynomial-generator}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Taylor terms; real-analysis, pending transfer}
+  \par\smallskip
   The Taylor term constructor takes $f$, then a centre $a$, then an order
   $n$, and returns the $n$th term as a polynomial function
   \[
@@ -52,51 +59,125 @@ of every order, including order zero, are continuous
         \frac{\DiffOp^n(f)(a)}{n!}\cdot(x-a)^n\bigr)\bigr)\bigr)
     \end{aligned}
   \]
+  \par\endgroup
 \end{dfn}
 
 \begin{dfn}{taylor-polynomial}
-The $n$-th order Taylor polynomial generator is defined as 
-\[\mathrm{TaylorPoly} : \SmoothRealFunctions\to\RR\to\NN\to\RR\to\RR \defeq f \map a \map N \map x \map \sum^N n \map \mathrm{TaylorGen}(f)(a)(n)(x) \]
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Taylor polynomials; real-analysis, pending transfer}
+  \par\smallskip
+The $N$-th order Taylor polynomial generator is defined as
+\[
+  \begin{aligned}
+    \mathrm{TaylorPoly} &: \SmoothRealFunctions\to\RR\to\NN\to(\RR\to\RR) \\
+    &\defeq f\map a\map N\map x\map
+      \sum_0^N\left(n\map\TaylorGen(f)(a)(n)(x)\right)
+  \end{aligned}
+\]
+  This uses the \xref[zero-based finite index ranges]{lec02::conv:finite-index-sum-product-notation}
+  \par\endgroup
 \end{dfn}
 
 \begin{conv}{taylor-polynomial-notation}
-
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Taylor polynomial notation; real-analysis, pending transfer}
+  \par\smallskip
+  Fix $f\in\SmoothRealFunctions$ and $a\in\RR$. Construct the term and
+  polynomial families
+  \[
+    \begin{aligned}
+      T &: \NN\to(\RR\to\RR)\defeq\TaylorGen(f)(a),\\
+      P &: \NN\to(\RR\to\RR)\defeq\TaylorPoly(f)(a)
+    \end{aligned}
+  \]
+  Thus $T(n)$ is the $n$th term function, while $P(N)$ is the polynomial
+  through order $N$. Their values satisfy
+  \[
+    \forall N\in\NN,\,\forall x\in\RR,\quad
+    P(N)(x)=\sum_0^N\bigl(n\map T(n)(x)\bigr)
+  \]
+  The zeroth term is $T(0)(x)=f(a)$, so $P(0)=x\map f(a)$.
+  The names $T$ and $P$ are local to
+  the chosen $f$ and $a$; construct them before using them in a derivation
+  \par\endgroup
 \end{conv}
 
 \begin{dfn}{taylor-remainder}
+  Fix $f\in\SmoothRealFunctions$ and $a\in\RR$
 
+  Construct $P\defeq\TaylorPoly(f)(a)$. The Taylor remainder family is
+  \[
+    R:\NN\to(\RR\to\RR)
+      \defeq n\map\bigl(x\map f(x)-P(n)(x)\bigr)
+  \]
+  Thus, for every $n\in\NN$ and $x\in\RR$,
+  \[
+    f(x)=P(n)(x)+R(n)(x)
+  \]
+  For fixed $f$, $a$, and $n$, different values of $x$ may give different
+  remainder values $R(n)(x)$
 \end{dfn}
 
 \begin{thm}[Finite Taylor Expansion]{finite-taylor-expansion}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Taylor expansion with remainder; real-analysis, pending transfer}
+  \par\smallskip
   Let $f\in\SmoothRealFunctions$, $n\in\NN$, and $a\in I$, where
-  $I\subseteq\RR$ is an open interval. For the
-  \xref[Taylor polynomial]{def:taylor-polynomial},
+  $I\subseteq\RR$ is an open interval. Construct the
+  \xref[polynomial family]{conv:taylor-polynomial-notation}
+  \[
+    P:\NN\to(\RR\to\RR)\defeq\TaylorPoly(f)(a)
+  \]
+  Let $R$ be the corresponding
+  \xref[remainder family]{def:taylor-remainder}. Then
   \[
     \begin{gathered}
-      \forall x\in I\setminus\{a\},\quad
+      \forall x\in I\setminus\{a\},\,
       \exists\xi\in\bigl(\min(a,x),\max(a,x)\bigr):\\
-      f(x)=P_{f,a,n}(x)+\frac{\DiffOp^{n+1}(f)(\xi)}{(n+1)!}
-        \cdot(x-a)^{n+1}
+      f(x)=P(n)(x)+\underbrace{
+        \frac{\DiffOp^{n+1}(f)(\xi)}{(n+1)!}\cdot(x-a)^{n+1}
+      }_{R(n)(x)}
     \end{gathered}
   \]
-  At $x=a$, $f(a)=P_{f,a,n}(a)$ and the remainder is zero
+  At $x=a$, $f(a)=P(n)(a)$ and $R(n)(a)=0$.
+  The intermediate point $\xi$ may depend on $x$ and $n$; the quantifier
+  order is $\forall x\,\exists\xi$
+  \par\endgroup
 \end{thm}
-
-\subsection{Taylor Series}
 
 % Moved from lec01.tex. Preserve these semantic IDs for references to the
 % Taylor material in this document.
 \begin{dfn}[Taylor Series]{taylor-series}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Taylor series and convergence; real-analysis, pending transfer}
+  \par\smallskip
   Let $f\in\SmoothRealFunctions$ and $a\in\RR$.
+  Construct $P\defeq\TaylorPoly(f)(a)$ as in the
+  \xref[polynomial-family notation]{conv:taylor-polynomial-notation}.
   Its \emph{Taylor-series sum} at $x$, when it exists, is
   \[
-    f(a)+\infsum\bigl(n\map\TaylorGen(f)(a)(n)(x)\bigr)
+    \seqlim\bigl(N\map P(N)(x)\bigr)
   \]
-  The sequence is indexed by $\NNOne$. The displayed expression equals
-  $f(x)$ precisely when $R_{f,a,N}(x)\to0$ as $N\to\infty$
+  Each partial sum includes Taylor terms indexed by $0,\ldots,N$.
+  The displayed expression equals $f(x)$ precisely when
+  $f(x)-P(N)(x)\to0$ as $N\to\infty$
+  \par\endgroup
 \end{dfn}
 
 \begin{rem}[Taylor Series Approximation]{taylor-series-approx}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Taylor approximation and remainder control; real-analysis, pending transfer}
+  \par\smallskip
   We can truncate the \xref[Taylor series]{def:taylor-series} to obtain a
   finite approximation. The
   \xref[Taylor expansion with remainder]{thm:finite-taylor-expansion}
@@ -105,9 +186,8 @@ The $n$-th order Taylor polynomial generator is defined as
   Adding terms does not automatically improve the approximation. The
   remainder must be controlled; equality with the infinite series requires
   that the remainder tend to zero as the number of terms increases
+  \par\endgroup
 \end{rem}
-
-\subsection{Example: Electric Field of a Dipole}
 
 \begin{eg}[Electric Field of a Dipole for $x \gg a$]{dipole-field}
   Consider the electric field on the axis of a dipole with charges $+q$ at
@@ -135,45 +215,389 @@ The $n$-th order Taylor polynomial generator is defined as
   The leading term is proportional to $x^{-3}$
 \end{eg}
 
-\subsection{Taylor Expansion in Two Variables}
-
-\todo[Write the expansion through second order, including the mixed derivative]
+\missingprereq{Taylor expansion in two variables through second order, including mixed derivatives; real-analysis}
 
 \section{Error Orders}
 
-\todo[Define big-O notation as the step size tends to zero; explain how halving the step changes an error of order one or two]
+\begin{conv}[Approximation Error]{approximation-error}
+  Let $X$ be a common input set, and let $u,v:X\to\RR$ denote the
+  computed and target functions, respectively. We write their error as
+  \[
+    E:X\to\RR\defeq t\map\bigl(u(t)-v(t)\bigr)
+  \]
+  Thus error means computed value minus target value; its magnitude is
+  $|E(t)|$
+\end{conv}
+
+\begin{dfn}[Big-O at Zero]{big-o-at-zero}
+  % RA-TRANSFER: real-analysis; preserve this semantic ID until transfer
+  \leavevmode\par
+  \begingroup\color{notesmissingprereq}
+  \missingprereq{Big-O as the argument tends to zero from above;
+  real-analysis, pending transfer}
+  \par\smallskip
+  Put $\mathcal F\defeq(\RR_{>0}\to\RR)$. For $h\to0^+$, define
+  \[
+    \begin{aligned}
+      \mathrm{BigO}&:\mathcal F\to\PowerSet(\mathcal F)\\
+      &\defeq g\map\left\{E\in\mathcal F\;\middle|\;
+        \exists C,\delta\in\RR_{>0},\,\forall h\in(0,\delta),\,
+        |E(h)|\leq C\cdot|g(h)|\right\}
+    \end{aligned}
+  \]
+  The constants $C$ and $\delta$ are independent of $h$
+  \par\endgroup
+\end{dfn}
+
+\begin{conv}[Big-O Notation]{big-o-notation}
+  Write $\OrderOf{g}\defeq\BigOClass(g)$ and use
+  $E=\OrderOf{g}$ for $E\in\OrderOf{g}$.
+  For $p\in\NN$, the shorthand for a power bound is
+  \[
+    E(h)=\OrderOf{h^p}\quad\iff\quad
+    E\in\BigOClass\bigl(h\map h^p\bigr)
+  \]
+  Here the limit is $h\to0^+$; functions on $\RR$ are restricted to
+  positive inputs. For $h\to+\infty$, the corresponding bound instead
+  holds for all $h>H$, for some fixed $H>0$
+\end{conv}
 
 \section{Numerical Differentiation}
 
-\subsection{Forward and Backward Differences}
+\missingprereq{Derivative at a point and differentiability; real-analysis, pending transfer}
 
-\todo[Define both first-derivative approximations and derive their error orders from Taylor expansion]
+\begin{conv}[Forward Difference]{forward-difference}
+  Fix $f\in\SmoothRealFunctions$. Given $h>0$, write
+  \[
+    f'_{h,+}:\RR\to\RR
+      \defeq x\map\frac{f(x+h)-f(x)}{h}
+  \]
+  For small $h$, this approximates the derivative pointwise:
+  \[
+    \forall x\in\RR,\quad f'_{h,+}(x)\approx\DiffOp(f)(x)
+  \]
+  The required step size may depend on the chosen $x$
+\end{conv}
 
-\subsection{Central Differences}
+\begin{conv}[Backward Difference]{backward-difference}
+  Fix $f\in\SmoothRealFunctions$. Given $h>0$, write
+  \[
+    f'_{h,-}:\RR\to\RR
+      \defeq x\map\frac{f(x)-f(x-h)}{h}
+  \]
+  For small $h$, this approximates the derivative pointwise:
+  \[
+    \forall x\in\RR,\quad f'_{h,-}(x)\approx\DiffOp(f)(x)
+  \]
+  The required step size may depend on the chosen $x$
+\end{conv}
 
-\todo[Derive central approximations for the first and second derivatives and their error orders]
+\begin{dfn}[Numerical Derivative Error]{numerical-derivative-error}
+  Fix $f:\RR\to\RR$ under the
+  \xref[standing smoothness assumption]{conv:smoothness-assumption}.
+  For each $h>0$, let $f'_h:\RR\to\RR$ denote a chosen numerical
+  approximation to $\DiffOp(f)$. Applying the
+  \xref[error convention]{conv:approximation-error}, its error function is
+  \[
+    E_h:\RR\to\RR
+      \defeq x\map\bigl(f'_h(x)-\DiffOp(f)(x)\bigr)
+  \]
+  Here $f'_h$ denotes the approximation, while $\DiffOp(f)$ denotes
+  the exact derivative
+\end{dfn}
 
-\subsection{Programming Exercise}
+\begin{prop}[First-Order Difference Errors]{first-order-difference-errors}
+  Let $f:\RR\to\RR$ satisfy the
+  \xref[standing smoothness assumption]{conv:smoothness-assumption}.
+  Let $E_h^+$ and $E_h^-$ be the
+  \xref[error functions]{def:numerical-derivative-error} of the forward
+  and backward approximations, respectively. Then
+  \[
+    \begin{gathered}
+      \forall x\in\RR,\,\forall h\in\RR_{>0},\,
+      \exists\xi_+\in(x,x+h),\,\exists\xi_-\in(x-h,x):\\
+      \begin{aligned}
+        E_h^+(x)&=\frac{h}{2!}\cdot\DiffOp^2(f)(\xi_+),\\
+        E_h^-(x)&=-\frac{h}{2!}\cdot\DiffOp^2(f)(\xi_-)
+      \end{aligned}
+    \end{gathered}
+  \]
+  For each fixed $x$, the functions $h\map E_h^+(x)$ and
+  $h\map E_h^-(x)$ belong to $\OrderOf{h\map h}$ as
+  $h\to0^+$, meaning
+  \[
+    \begin{gathered}
+      \forall x\in\RR,\,\exists C,\delta\in\RR_{>0},\,
+      \forall h\in(0,\delta):\\
+      |E_h^+(x)|\leq C\cdot h,\qquad
+      |E_h^-(x)|\leq C\cdot h
+    \end{gathered}
+  \]
+  The intermediate points and error bounds may depend on $x$;
+  the intermediate points may also depend on $h$
+\end{prop}
+
+\begin{proof}
+  Fix $x\in\RR$ and $h>0$.
+  By the \xref[finite Taylor expansion]{thm:finite-taylor-expansion},
+  there exists $\xi_+\in(x,x+h)$ such that
+  \[
+    f(x+h)=f(x)+h\cdot\DiffOp(f)(x)
+      +\frac{h^2}{2!}\cdot\DiffOp^2(f)(\xi_+)
+  \]
+  Rearranging and dividing by $h$ yields
+  \[
+    \DiffOp(f)(x)=\frac{f(x+h)-f(x)}{h}
+      -\frac{h}{2!}\cdot\DiffOp^2(f)(\xi_+)
+  \]
+  For the forward approximation, substituting into the
+  \xref[error function]{def:numerical-derivative-error} gives
+  \[
+    \begin{aligned}
+      E_h^+(x)
+        &=f'_{h,+}(x)-\DiffOp(f)(x)\\
+        &=\frac{f(x+h)-f(x)}{h}-\DiffOp(f)(x)\\
+        &=\frac{f(x+h)-f(x)}{h}
+          -\left(\frac{f(x+h)-f(x)}{h}
+            -\frac{h}{2!}\cdot\DiffOp^2(f)(\xi_+)\right)\\
+        &=\frac{h}{2!}\cdot\DiffOp^2(f)(\xi_+)
+    \end{aligned}
+  \]
+  Since $\DiffOp^2(f)$ is continuous, there exist $M,\delta>0$ such
+  that $|\DiffOp^2(f)(y)|\leq M$ whenever $|y-x|<\delta$.
+  Hence, for $0<h<\delta$,
+  \[
+    |E_h^+(x)|=\frac{h}{2!}\cdot|\DiffOp^2(f)(\xi_+)|
+      \leq\frac{M}{2!}\cdot h
+  \]
+  Thus $E_h^+(x)=\OrderOf{h}$ as $h\to0^+$.
+  The backward case follows analogously by expanding $f(x-h)$ about $x$
+\end{proof}
+
+\begin{conv}[Central Difference]{central-difference}
+  Fix $f\in\SmoothRealFunctions$ and $h>0$. Averaging the
+  \xref[forward]{conv:forward-difference} and
+  \xref[backward]{conv:backward-difference} approximations gives
+  \[
+    f'_{h,0}:\RR\to\RR
+      \defeq x\map\frac{f'_{h,+}(x)+f'_{h,-}(x)}{2}
+  \]
+  Thus, pointwise for small $h$,
+  \[
+    \forall x\in\RR,\quad
+    f'_{h,0}(x)=\frac{f(x+h)-f(x-h)}{2h}\approx\DiffOp(f)(x)
+  \]
+\end{conv}
+
+\begin{prop}[Central Difference Error]{central-difference-error}
+  For the \xref[central approximation]{conv:central-difference}, construct
+  \[
+    E_h^0:\RR\to\RR
+      \defeq x\map\bigl(f'_{h,0}(x)-\DiffOp(f)(x)\bigr)
+  \]
+  The error is of second order pointwise as $h\to0^+$:
+  \[
+    \forall x\in\RR,\,\exists C,\delta\in\RR_{>0},\,
+    \forall h\in(0,\delta),\quad |E_h^0(x)|\leq C\cdot h^2
+  \]
+  Equivalently, for each fixed $x$, $E_h^0(x)=\OrderOf{h^2}$
+\end{prop}
+
+\begin{proof}
+  Fix $x\in\RR$ and $h>0$. Taylor expansion about $x$ gives
+  $\xi_+\in(x,x+h)$ and $\xi_-\in(x-h,x)$ such that
+  \[
+    f(x\pm h)=f(x)\pm h\cdot\DiffOp(f)(x)
+      +\frac{h^2}{2!}\cdot\DiffOp^2(f)(x)
+      \pm\frac{h^3}{3!}\cdot\DiffOp^3(f)(\xi_\pm)
+  \]
+  Subtracting cancels the constant and quadratic terms. Hence
+  \[
+    \begin{aligned}
+      E_h^0(x)&=\frac{f(x+h)-f(x-h)}{2h}-\DiffOp(f)(x)\\
+        &=\frac{h^2}{2\cdot3!}\cdot
+          \bigl(\DiffOp^3(f)(\xi_+)+\DiffOp^3(f)(\xi_-)\bigr)
+    \end{aligned}
+  \]
+  Continuity of $\DiffOp^3(f)$ gives $M,\delta>0$ such that
+  $|\DiffOp^3(f)(y)|\leq M$ whenever $|y-x|<\delta$.
+  Thus, for $0<h<\delta$,
+  \[
+    |E_h^0(x)|\leq\frac{M}{3!}\cdot h^2
+  \]
+  Taking $C=M/3!$ proves the stated bound
+\end{proof}
+
+\begin{conv}[Central Second Derivative]{central-second-derivative}
+  Fix $f\in\SmoothRealFunctions$ and $h>0$. Write
+  \[
+    f''_{h,0}:\RR\to\RR
+      \defeq x\map\frac{f(x+h)-2\cdot f(x)+f(x-h)}{h^2}
+  \]
+  Pointwise for small $h$,
+  \[
+    \forall x\in\RR,\quad f''_{h,0}(x)\approx\DiffOp^2(f)(x)
+  \]
+\end{conv}
+
+\begin{prop}{central-second-derivative-error}
+  The error is $\OrderOf{h^2}$ pointwise as $h\to0^+$
+\end{prop}
+
+\begin{proof}
+  Fix $x\in\RR$. Expand, add, and rearrange:
+  \[
+    \begin{gathered}
+      f(x+h)=f(x)+h\cdot\DiffOp(f)(x)
+        +\frac{h^2}{2!}\cdot\DiffOp^2(f)(x)
+        +\frac{h^3}{3!}\cdot\DiffOp^3(f)(x)+\OrderOf{h^4},\\
+      f(x-h)=f(x)-h\cdot\DiffOp(f)(x)
+        +\frac{h^2}{2!}\cdot\DiffOp^2(f)(x)
+        -\frac{h^3}{3!}\cdot\DiffOp^3(f)(x)+\OrderOf{h^4},\\
+      f(x+h)+f(x-h)=2\cdot f(x)
+        +h^2\cdot\DiffOp^2(f)(x)+\OrderOf{h^4},\\
+      \frac{f(x+h)-2\cdot f(x)+f(x-h)}{h^2}
+        =\DiffOp^2(f)(x)+\OrderOf{h^2}
+    \end{gathered}
+  \]
+\end{proof}
 
 \todo[Implement the difference formulas for sine at x=1; compare with the exact derivatives over several step sizes]
 
-\section{First-Order Differential Equations}
-
-\todo[Define an ordinary differential equation and an initial-value problem in separate blocks]
-
 \section{Euler's Method}
 
-\todo[Introduce the time grid and numerical iterates; derive the forward Euler update and distinguish local and global errors]
+\begin{conv}[Approximate Functions]{approximate-function-notation}
+  Fix $f\in\SmoothRealFunctions$ and a set $X\subseteq\RR$ of evaluation
+  points. We use $f',f^\dagger:X\to\RR$ for numerical approximations
+  to the derivative and the original function, respectively:
+  \[
+    \forall x\in X,\quad
+    f'(x)\approx\DiffOp(f)(x),\qquad f^\dagger(x)\approx f(x)
+  \]
+  The approximations depend on the chosen method and step size.
+  For Euler's method, $X$ is the time grid
+\end{conv}
 
-\subsection{Programming Exercise}
+\begin{conv}{forward-euler}
+For a small non-zero $h$, the forward Euler update is
+\[f(x+h) = f(x) + h \cdot f'(x)\]
+\end{conv}
+
+\begin{proof}
+According to the definition of the forward deritive, ie 
+\[\DiffOp(f) \approx f' = \frac{f(x+h)-f(x)}{h}\] 
+
+Rearrange, 
+\[h \cdot f' = f(x+h)-f(x) \implies f(x+h) = f(x) + h \cdot f'(x)\] 
+\end{proof}
+
+\begin{conv}[Procedure of Applying Forward Euler]{procedure-forward-euler}
+\begin{enumerate}[nosep]
+\item Start from the ODE
+  $\forall x\in\RR,\,\DiffOp(f)(x)=g(x,f(x))$,
+  with known $g$ and unknown $f$
+\item Specify an initial point $x_0$ and a known value $y_0=f(x_0)$
+\item Choose a step size $h>0$ and a number of steps $N\in\NNOne$
+\item Set $x_n\defeq x_0+n\cdot h$ for $n\in\Fin(N+1)$, and define
+  the grid $X\defeq\{x_n\mid n\in\Fin(N+1)\}$
+\item Construct $f^\dagger:X\to\RR$, starting with
+  $f^\dagger(x_0)\defeq y_0$
+\item For $n=0,\ldots,N-1$, compute and store
+  \[
+    f^\dagger(x_{n+1})\defeq f^\dagger(x_n)
+      +h\cdot g(x_n,f^\dagger(x_n))
+  \]
+\item Return $f^\dagger$, represented by the sampled pairs
+  $(x_n,f^\dagger(x_n))$ for $n\in\Fin(N+1)$
+\end{enumerate}
+\end{conv}
+
+\begin{conv}{backward-euler}
+For a small non-zero $h$, the backward Euler update is
+\[f(x-h) = f(x) - h \cdot f'(x)\]
+\end{conv}
+
+\begin{proof}
+According to the definition of the backward difference, ie 
+\[\DiffOp(f) \approx f' = \frac{f(x)-f(x-h)}{h}\] 
+
+Rearrange,
+\[h \cdot f' = f(x)-f(x-h) \implies f(x-h) = f(x) - h \cdot f'(x)\]  
+\end{proof}
+
+\todo[Derive the forward Euler update from the forward difference formula, then distinguish local and global errors]
 
 \todo[Solve x'=-x with x(0)=1 and compare with exp(-t) using several time steps]
 
-\section{Second-Order Dynamics}
+\begin{conv}[Euler for Second-Order Dynamics]{second-order-euler}
+\begin{enumerate}[nosep]
+\item Start from the ODE
+  $\forall x\in\RR,\,\DiffOp^2(f)(x)=g(x,f(x),\DiffOp(f)(x))$,
+  with known $g$ and unknown $f$
+\item Specify an initial point $x_0$ which has known values $y_0=f(x_0)$ and $v_0=\DiffOp(f)(x_0)$ 
+\item Choose a step size $h>0$ and a number of steps $N\in\NNOne$
+\item Set $x_n\defeq x_0+n\cdot h$ for $n\in\Fin(N+1)$, and define
+  the grid $X\defeq\{x_n\mid n\in\Fin(N+1)\}$
+\item Construct $f^\dagger:X\to\RR$, starting with
+  $f^\dagger(x_0)\defeq y_0$
+  \item Construct $f':X\to\RR$, starting with
+  $f'(x_0)\defeq v_0$
+\item For $n=0,\ldots,N-1$, compute and store
+  \[
+    f'(x_{n+1})\defeq f'(x_n)
+      +h\cdot g(x_n,f^\dagger(x_n),f'(x_n))
+  \]
+  \[
+  f^{\dagger}(x_{n+1})\defeq f^{\dagger}(x_{n}) + h\cdot f'(x_n)
+  \]
+  Both updates use values at $x_n$ on their right-hand sides
+\item Return $f^\dagger$, represented by the sampled pairs
+  $(x_n,f^\dagger(x_n))$ for $n\in\Fin(N+1)$
+\end{enumerate}
+\end{conv}
 
-\todo[Introduce velocity to rewrite a second-order equation as two first-order equations; derive Euler updates using the old values on both right-hand sides]
-
-\subsection{Programming Exercise}
+\begin{conv}[Euler for General-Order Dynamics]{general-order-euler}
+\begin{enumerate}[nosep]
+\item Fix an order $m\in\NNOne$ and a known function
+  $g:\RR\times\RealVectors{m}\to\RR$. Start from the ODE
+  \[
+    \forall x\in\RR,\quad
+    \DiffOp^m(f)(x)
+      =g\bigl(x,k\map\DiffOp^k(f)(x)\bigr)
+  \]
+  The second input to $g$ collects the derivatives of orders
+  $0,\ldots,m-1$ into a vector
+\item Specify an initial point $x_0$ and known initial values
+  $a:\RealVectors{m}$ satisfying
+  \[
+    \forall k\in\Fin(m),\quad \DiffOp^k(f)(x_0)=a(k)
+  \]
+\item Choose $h>0$ and $N\in\NNOne$, and construct $x_n$ and the grid
+  $X$ as in the \xref[forward Euler procedure]{conv:procedure-forward-euler}
+\item Construct a family $U:\Fin(m)\to(X\to\RR)$, where $U(k)$
+  approximates $\DiffOp^k(f)$, starting with
+  \[
+    \forall k\in\Fin(m),\quad U(k)(x_0)\defeq a(k)
+  \]
+\item For $n=0,\ldots,N-1$, collect the old state
+  \[
+    s_n:\RealVectors{m}\defeq k\map U(k)(x_n)
+  \]
+  Compute and store
+  \[
+    \forall k\in\Fin(m-1),\quad
+    U(k)(x_{n+1})\defeq U(k)(x_n)+h\cdot U(k+1)(x_n)
+  \]
+  \[
+    U(m-1)(x_{n+1})\defeq U(m-1)(x_n)+h\cdot g(x_n,s_n)
+  \]
+  All right-hand sides use the old state at $x_n$
+\item Return $f^\dagger\defeq U(0)$, or retain the full family $U$
+  if approximations to the derivatives are also needed
+\end{enumerate}
+  For $m=2$, $U(0)=f^\dagger$ and $U(1)=f'$, recovering the
+  \xref[second-order procedure]{conv:second-order-euler}
+\end{conv}
 
 \todo[Implement the pendulum model and compare results as the time step changes]
 

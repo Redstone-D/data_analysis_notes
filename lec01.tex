@@ -44,7 +44,8 @@
   \begin{equation}
     ax^2 + bx + c = 0,
   \end{equation}
-  where $a$, $b$, and $c$ are constants. The analytic solution for $x$ can be found using the quadratic formula:
+  where $a$, $b$, and $c$ are real constants and $a\ne0$.
+  When $b^2-4ac\geq0$, the real solutions are given by the quadratic formula:
   \begin{equation}
     x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.
   \end{equation} 
@@ -67,16 +68,16 @@
 
   The numerical solutions can be 
   \[
-  \beta = 1, \quad x \approx 0.73909, \quad \beta = 0.5, \quad x \approx 0.4508 
+  \beta = 1, \quad x \approx 0.73909, \quad \beta = 0.5, \quad x \approx 0.45018
   \]
 \end{eg} 
 
 \begin{rem}[Advantages and Disadvantages of Numerical Methods]{numerical-methods}
   \begin{enumerate}[nosep] 
-    \item For numerical methods, we must have all parameters of the problem known. 
-    \item If parameters change, solution must be re-done.
-    \item Solutions may be not exact. 
-    \item Numerical solutions often considered inferior to analytic solutions, if exist. \textit{ie, we should use analytical methods whenever possible or too difficult.}
+    \item A numerical run uses specified input values; unknown parameters may themselves be quantities to estimate
+    \item Changing the input values may require another run
+    \item Numerical solutions are generally approximate; their accuracy depends on the method and stopping rule
+    \item Analytical formulas can explain parameter dependence, while numerical methods can provide useful values even when a closed form exists
   \end{enumerate}
 
 \end{rem} 
@@ -100,19 +101,45 @@
   \end{enumerate} 
 \end{conv}
 
-\color{blue}\begin{rem}[Error Analysis of Fixed Point Iteration Method]{fixed-point-iteration-error}
-  By using this method, we usually believe that the root, $r$, is close to the initial guess, $x_0$. Also, it should be within $x_n$ and $x_{n+1}$ forall $n$. 
+\begin{rem}[Error Analysis of Fixed Point Iteration Method]{fixed-point-iteration-error}
+  Successive iterates need not lie on opposite sides of a fixed point,
+  and their distance alone is not a bound on the root error
 
-  Which means, the error of the $n$-th iteration is $|x_n - r| \leq |x_{n+1} - x_n|$. 
+  Suppose $g$ is differentiable on an open interval containing a closed
+  interval $I=[a,b]$, where $a<b$, and
+  \[
+    g(I)\subseteq I,\qquad x_0:I,\qquad
+    \exists q:\RR,\quad 0\leq q<1,\quad
+    \forall t:I,\quad |g'(t)|\leq q
+  \]
+  Then $x_{n+1}=g(x_n)$ converges to the unique fixed point $r:I$, and
+  \[
+    |x_{n+1}-r|\leq q\cdot|x_n-r|,\qquad
+    |x_{n+1}-r|\leq\frac{q}{1-q}\cdot|x_{n+1}-x_n|
+  \]
+  Thus a certified root-error tolerance $\varepsilon>0$ is met when
+  $\frac{q}{1-q}\cdot|x_{n+1}-x_n|\leq\varepsilon$
 \end{rem}
 
-\begin{proof}[Convergence of Fixed Point Iteration Method]
-
+\begin{proof}[Convergence Intuition]
+  \leavevmode\par
+  \missingprereq{Mean value theorem and completeness of the real numbers;
+  real-analysis}
+  \begin{itemize}[nosep]
+    \item The derivative bound shrinks distances by at most a factor $q$
+    \item Successive changes are bounded by a geometric sequence, so the
+      iterates converge within the closed interval; continuity makes
+      their limit a fixed point
+    \item Summing the remaining changes gives the displayed root-error
+      bound. Two distinct fixed points would contradict the distance bound
+  \end{itemize}
 \end{proof}
-\color{black}
 
 \begin{conv}[Optimized Fixed Point Iteration]{optimized-fpi}
-  We may want to set an error tolerance, $\mathrm{tol}$, and stop the iteration when $|x_{n+1} - x_n| < \mathrm{tol}$. 
+  Set a step tolerance $\mathrm{tol}>0$ and stop when
+  $|x_{n+1}-x_n|<\mathrm{tol}$. This test alone does not certify a root
+  error below $\mathrm{tol}$; use the assumptions and bound in the
+  \xref[fixed-point error analysis]{rem:fixed-point-iteration-error}
     \begin{enumerate}[nosep]
     \item Find a function $g(x)$ such that root $r$ is a fixed point of $g(x)$, i.e., $g(r) = r$.
     \item Choose an initial guess $x_0$.
@@ -120,7 +147,7 @@
     \item Set an error tolerance, $\mathrm{tol}$ 
     \item Iterate $x_{n+1} = g(x_n)$ 
     \item Check if $|x_{n+1} - x_n| < \mathrm{tol}$, if yes, stop the iteration and return the value. 
-    \item If the maximum number of iterations is reached, stop the iteration and return the value. (For some algorithms, we may want to return an error message instead.)
+    \item If $N$ updates are exhausted without meeting the stopping test, stop with an error
   \end{enumerate} 
 
   \lstinputlisting[language=Python]{lec01/find_fixed_point_display.py}
@@ -135,7 +162,7 @@
     \item Error tolerance: $\mathrm{tol} \in \{5 \times 10^{-2},\ 1 \times 10^{-3}\}$ (two runs for comparison).
     \item Iterate $x_{n+1} = \cos x_n$.
     \item Stop when $|x_{n+1} - x_n| < \mathrm{tol}$ and return $x_{n+1}$.
-    \item If $n$ reaches $N$, stop and return the last $x_{n+1}$.
+    \item If $N$ updates are exhausted without meeting the stopping test, stop with an error
   \end{enumerate}
 
   In Python:
@@ -191,7 +218,10 @@
 \end{rem}
 
 \begin{eg}[Divergent Case: $x - 1.5 \cos x = 0$]{divergent-fpi}
-  Same procedure as \xref{eg:cos-fixed-point}, but with $g(x) = 1.5 \cos x$ and $x_0 = 1$. It diverges and oscillates between $\approx 0.123$ and $\approx 1.489$; both runs hit $N = 100$ without ever satisfying the stop condition.
+  Same procedure as \xref{eg:cos-fixed-point}, but with $g(x)=1.5\cos x$
+  and $x_0=1$. The iterates do not converge to a fixed point; they
+  approach an alternating pair near $0.123$ and $1.489$.
+  Both plotted runs reach $N=100$ without satisfying the stopping test
 
   \begin{figure}[h]
     \centering
@@ -244,26 +274,41 @@
 \end{dfn} 
 
 \begin{conv}[Procedure of Bisector Method]{bisector-method-procedure}
-  The procedure of bisector method is as follows: 
+  Let $f$ be continuous on $[a_0,b_0]$, where $a_0<b_0$
   \begin{enumerate}[nosep]
-    \item Find an interval $[a, b]$ such that $\exists r \in [a, b] \text{ st } f(r) = 0$ and $f(a)f(b) < 0$. 
-    \item Set the maximum number of iterations, $N$. 
-    \item Find the midpoint of the interval, $c = \frac{a+b}{2}$.
-    \item Evaluate $f(c)$.
-    \item If $f(a)$ and $f(c)$ have opposite signs, then set $b = c$; otherwise, set $a = c$. 
-    \item If the maximum number of iterations is reached, stop the iteration and return the value. Otherwise goto step 3. 
-  \end{enumerate} 
+    \item If either endpoint is an exact root, return it. Otherwise require
+      $f(a_0)\cdot f(b_0)<0$
+    \item Choose $N:\NN$ halvings and initialize $a=a_0$, $b=b_0$
+    \item For each halving, compute $c=(a+b)/2$. If $f(c)=0$, return $c$
+    \item Otherwise, if $f(a)\cdot f(c)<0$, set $b=c$; if not, set $a=c$
+    \item Repeat until $N$ halvings are complete, then return the midpoint
+      $(a+b)/2$ of the final interval
+  \end{enumerate}
+  Alternatively, stop once half the current interval width is at most the
+  requested absolute error, and return its midpoint
 \end{conv}
 
 \begin{proof}[Bisector Method Convergence]
-Continous Function, IVT. TODO 
+\missingprereq{Continuity and the intermediate value theorem; real-analysis}
+
+\todo[Use the intermediate value theorem and nested bisection intervals to prove convergence]
 \end{proof}
 
 \begin{rem}[Error Analysis of Bisector Method]{bisector-method-error}
-  By using this method, we usually believe that the root, $r$, is in the interval $[a, b]$. 
-
-  Which means, we can have a one to one map between the number of iterations and the error tolerance, $tol$, 
-  \[tol = |a - b| \times 2^{-n}\]
+  Unless an exact root is found earlier, after $k$ halvings the retained
+  interval $[a_k,b_k]$ contains a root and has width
+  \[
+    b_k-a_k=\frac{b_0-a_0}{2^k}
+  \]
+  Its midpoint $c_k=(a_k+b_k)/2$ therefore satisfies, for a root
+  $r:[a_k,b_k]$,
+  \[
+    |c_k-r|\leq\frac{b_k-a_k}{2}
+      =\frac{b_0-a_0}{2^{k+1}}
+  \]
+  Returning an endpoint instead gives the weaker bound $b_k-a_k$.
+  Choose $k$ so that the appropriate bound is at most the requested
+  tolerance; the width is an error bound, not the exact error
 \end{rem} 
 
 \section{Newton-Raphson Method} 

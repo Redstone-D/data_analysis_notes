@@ -145,3 +145,28 @@ Operator macros use `\mathop{...}` for correct spacing (as with `\sup`,
 - Omit the sentence-ending period (`.`) at the end of a paragraph
 - This also applies to punctuation after a displayed formula that ends the paragraph
 - Keep periods between sentences within the same paragraph
+
+## 10. Visible LaTeX usage notes
+
+- At the bottom of an operator definition, immediately before `\end{dfn}`,
+  add one visible line showing the exact LaTeX command and input order
+- Apply the same rule to a `conv` that introduces a notation macro
+- Display the line in small `\texttt` text, using `\detokenize` to print
+  command names, braces, and underscores literally, for example:
+
+  ```latex
+  \par\smallskip\noindent{\footnotesize\texttt{LaTeX: \detokenize{\PolyError(n)(m)(x)(y)(c)}}}
+  ```
+
+- Keep any additional partial-application reminders as source comments
+
+## 11. Zero-based indices
+
+- Index finite data, vector coordinates, and matrix rows and columns from zero
+- A family of length `k` has domain `\Fin(k)` and indices `0,...,k-1`
+- In data fitting, `n` counts observations and `m` is the maximum polynomial
+  degree: data have domain `\Fin(n)`, and coefficient vectors belong to
+  `\RealVectors{m+1}` with coordinates `c(0),...,c(m)`
+- Taylor polynomial sums include the zeroth-order term explicitly
+- Keep positive counts and bounds such as `n:\NNOne` when zero is invalid;
+  this restriction does not change the first coordinate index

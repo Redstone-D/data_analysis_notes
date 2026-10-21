@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from math import isfinite
 
 import matplotlib.pyplot as plt
 
@@ -22,22 +23,43 @@ def plot_bisector_iteration(
 
     Returns the sequence of midpoints [c_0, c_1, ..., c_k].
     """
-    if f(a) * f(b) > 0:
+    if not isfinite(a) or not isfinite(b) or a >= b:
+        raise ValueError("Require finite endpoints with a < b.")
+    if not isfinite(tol) or tol <= 0:
+        raise ValueError("tol must be finite and positive.")
+    if not isinstance(max_iter, int) or max_iter < 1:
+        raise ValueError("max_iter must be a positive integer.")
+    fa, fb = f(a), f(b)
+    if not isfinite(fa) or not isfinite(fb):
+        raise ValueError("Function values must be finite.")
+    if fa != 0 and fb != 0 and (fa < 0) == (fb < 0):
         raise ValueError("f(a) and f(b) must have opposite signs.")
 
     aa, bb = a, b
+    if fa == 0:
+        aa = bb = a
+    elif fb == 0:
+        aa = bb = b
     a_hist = [aa]
     b_hist = [bb]
     c_hist: list[float] = []
     for _ in range(max_iter):
-        c = (aa + bb) / 2
+        c = aa / 2 + bb / 2
+        fc = f(c)
+        if not isfinite(fc):
+            raise ValueError("Function values must be finite.")
         c_hist.append(c)
+        if fc == 0:
+            a_hist.append(c)
+            b_hist.append(c)
+            break
         if (bb - aa) / 2 < tol:
             break
-        if f(aa) * f(c) < 0:
+        if (fa < 0) != (fc < 0):
             bb = c
         else:
             aa = c
+            fa = fc
         a_hist.append(aa)
         b_hist.append(bb)
 
